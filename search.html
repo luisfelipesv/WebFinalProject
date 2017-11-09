@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    Hotel Sweet - Search
+  </title>
+  <link rel="stylesheet" type="text/css" href="styles/hotelSweet.css">
+  <link rel="stylesheet" type="text/css" href="styles/search.css">
+</head> 
+
+
+
+<body>
+
+  <div class="globalNav">
+    <div class="container">
+
+      <div class="leftMenu">
+        <ul>
+          <li><a class="navMenuItem" href="home.html">Home</a></li>
+          <li><a class="navMenuItem" href="friends.html">Friends</a></li>
+          <li><a class="navMenuItem" href="friendRequests.html">Requests</a></li>
+          <li class="active"><a class="navMenuItem active" href="search.html">Search</a></li>
+        </ul>   
+      </div>
+
+      <img id="navLogo" src="assets/jammer_logo.png" alt="logo">
+
+      <div class="rightMenu">
+        <a href="profile.html">
+          <img id="profileBtn" src="assets/profile.svg" alt="avi">
+        </a>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="searchFieldSection">
+      <input id="searchField" class="textField" type="text" placeholder="Search for contacts here...">
+      <button id="searchBtn" class="roundedBtn" type="button" >SEARCH</button> 
+    </div>
+    <div id="usersSection">
+
+    </div>
+  </div>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modalContent">
+      <div class="modalHeader">
+        <div id="modalTitle" class="headerText">Modal Header</div>
+        <!-- <span id="closeModal" class="close">&times;</span>  -->
+     </div>
+     <div class="modalBody">
+      <p id="modalMessage">Some text in the Modal Body</p>
+      <button id="modalBtn" class="roundedBtn" type="button" >OK</button> 
+    </div>
+  </div>
+
+
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/search.js"></script>
+</body>
+</html>

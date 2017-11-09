@@ -1,0 +1,249 @@
+/* Font */
+body{
+  font-family:'Avenir Next';
+  color: white;
+  margin: 0;
+  padding: 0;
+  background-color: #F7F7F7;
+  text-align: center;
+}
+
+p{
+  font-size: 20px;
+  color: white;
+  text-align: left;
+}
+
+/* Navigation Bar */
+.globalNav {
+  background-color: #2E6DBA;
+  height: 46px;
+  margin: 0px;
+  padding: 0px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.globalNav > .container {
+  max-width: 1190px;
+  height: 100%;
+  width: auto;
+  margin: 0 auto;
+  text-align: center;
+}
+.globalNav > .menu {
+  display: inline-block;
+}
+
+.globalNav > img {
+  /*
+  max-height: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  */
+}
+
+.leftMenu {
+  float: left;
+}
+
+.rightMenu {
+  float: right;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#navLogo {
+  margin: 0;
+  padding: 0;
+  height: 46px;
+  width: 46px;
+  position: absolute;
+  left: 50%;
+  margin-left: -24px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+/*Log out button */
+/*
+#profileBtn {
+  background-color: transparent;
+  color: white;
+  height: 30px;
+  width: 30px;
+  border: 0px;
+  margin: 0px 0px;
+  vertical-align: middle;
+}
+*/
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li{
+  float: left;
+  height: 43px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 0px 16px;
+  vertical-align: middle;
+}
+
+.navMenuItem {
+  font-size: 14px;
+  height: 43px;
+  display: block;
+  color: white;
+  padding: 14px 0px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+li:hover {
+    border-bottom: 3px solid #50E3C2;
+}
+
+li.active {
+    border-bottom: 3px solid #50E3C2;
+}
+
+a:hover {
+  color: #50E3C2;
+}
+a.active{
+  color: #50E3C2;
+}
+
+/* Text field */
+.textField {
+  font-size: 14px;
+  padding: 5px 10px;
+  margin: auto 16px;
+  height: 46px;
+  width: 4500px;
+  border: 1px solid #D9D9D9;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+/* Rounded button */
+.roundedBtn {
+  height: 35px;
+  margin: auto 16px auto 0px;
+  padding: 0px 15px;
+  background-color: #50E3C2;
+  border-radius: 17.5px;
+  border: 0px;
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  cursor:pointer;
+
+}
+
+.roundedBtn:hover {
+  background-color: #389F88;
+}
+
+.roundedBtn:active {
+  color: #B3B3B3;
+}
+
+ /* MODAL */
+ .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modalHeader {
+    margin: 0px 0px;
+    height: 35px;
+    background-color: #2E6DBA;
+    font-size: 14px;
+    color: white;
+}
+
+.headerText {
+  margin: 8px 16px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+/* Modal Body */
+.modalBody {
+  padding: 0px 16px;
+}
+
+#modalMessage {
+  font-size: 14px;
+  height: 38px;
+  padding: 0px;
+  margin: 20px 10px;
+  text-align: center;
+  color: #4A4A4A;
+  font-weight: 500;
+}
+
+#modalBtn {
+  margin: 0px auto 16px auto;
+}
+
+
+/* Modal Content */
+.modalContent {
+    position: relative;
+    background-color: #FFF;
+    margin: 15% auto;
+    padding: 0;
+    border: 0;
+    width: 300px;
+    height: 164px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+} 
+
+
+

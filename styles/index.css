@@ -1,0 +1,67 @@
+
+
+.border-list{
+  margin-left: 20px;
+  margin-top: 30px;
+}
+
+body{
+  font-family: Verdana, sans-serif;;
+  font-size: 15px;
+  color: gray;
+  margin: 0;
+  padding: 0;
+  /*background-image: url(parque.jpg);*/
+}
+
+h1{
+  background-color: #0E3C7C;
+  margin: 0;
+  padding: 50px 20px 50px 20px;
+  color: white;
+  text-align: center;
+}
+
+fieldset{
+  border: 2px dashes #dddddd;
+  margin: 20px;
+  padding: 20px;
+}
+
+legend{
+  font-size: 1.3em;
+  font-weight: 900;
+  color: green;
+}
+
+span.error {
+    color: #D0021B;
+    display: none;
+}
+
+div.footer{
+  background-color: #0E3C7C;
+  color: white;
+  padding: 20px 20px 20px 20px;
+}
+
+.formElement{
+    font-size: 1em;
+    padding: 5px 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formElementError{
+    font-size: 1em;
+    padding: 5px 10px;
+    width: 300px;
+    border: 1px solid #D0021B;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+

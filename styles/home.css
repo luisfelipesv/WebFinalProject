@@ -1,0 +1,85 @@
+
+/* Page */
+.page {
+  background-color: #F7F7F7;
+  width: 840px;
+  height: 100vh;
+  display: block;
+  margin-top: 42px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+/* Table divs*/
+.roomsTable{
+  margin-top: 40px;
+  display: table;
+  width: 100%;
+}
+.roomsTableBody {
+  display: table-row-group;
+}
+.roomsRow {
+  display: table-row;
+}
+.roomCell{
+  border: 0px;
+  display: table-cell;
+  padding: 0px 0px;
+  height: 130px;
+}
+
+/* Room divs */
+.roomDiv {
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  height: 110px;
+  width: 180px;
+  background-color: #BF1F41;
+}
+
+.roomDiv.available {
+  background-color: #7ED321;
+}
+
+.roomDiv.occupied {
+  background-color: #BF1F41;
+}
+
+.roomDiv.inService {
+  background-color: #F5A623;
+}
+
+.roomDiv.inRepair {
+  background-color: #C5C4C2;
+}
+
+.roomBottomInfo {
+  width: 100%;
+  display: inline-block;
+}
+/* Room labels */
+.roomNumber {
+  padding-top: 30px;
+  font-size: 36px;
+  /* center vertical and horizontal */
+}
+
+.roomHour {
+  font-size: 18px;
+  float: right;
+  padding-right: 10px;
+}
+
+.roomImg {
+  margin-left: 10px;
+  height: 25px;
+  width: 26px;
+  float: left;
+}
+
+
+
