@@ -161,7 +161,7 @@ function presentOccupiedRoom(room) {
 	addRoomNumber(room);
 
    	var newHtml = '<div class="roomBottomInfo">';
-    newHtml = '<img class="roomImg" src="assets/clock.png" alt="clock">';
+    newHtml = '<img class="roomImg" src="assets/clock.svg" alt="clock">';
     newHtml = '<div class="roomHour">' + room.endHour + '</div>';
     newHtml = '</div>';
 	$("#roomId").append(newHtml);
