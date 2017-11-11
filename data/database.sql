@@ -7,4 +7,5 @@ CREATE TABLE motelSweet_db.Users (
     username VARCHAR(45) NOT NULL,
     user_password VARCHAR(45) NOT NULL,
     email VARCHAR(45) NOT NULL,
+		tipoCuenta VARCHAR(45) NOT NULL
 );

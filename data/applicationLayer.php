@@ -4,11 +4,11 @@
 	require_once __DIR__ . '/dataLayer.php';
 
 	$action = $_POST["action"];
-    
+
 	switch($action){
-		case "isLoggedIn": 
+		case "isLoggedIn":
 			isLoggedIn();
-			break;	
+			break;
 		case "getUsername":
 			getCookieUsername();
 			break;
@@ -81,14 +81,15 @@
         $lastName = $_POST["lastName"];
         $country = $_POST["country"];
 		$gender = $_POST["gender"];
+		$tipoCuenta = $_POST["tipoCuenta"];
 
-		$result = attemptRegister($username, $email, $password, $firstName, $lastName, $country, $gender);
+		$result = attemptRegister($username, $email, $password, $firstName, $lastName, $country, $gender, $tipoCuenta);
 
       	if ($result["status"] == 200){
       		session_start();
       		$_SESSION['loggedIn'] = "TRUE";
       		$_SESSION['userId'] = $result["userId"];
-			
+
 			echo json_encode(array("result"=> "SUCCESS"));
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
@@ -106,14 +107,14 @@
       		session_start();
 			$_SESSION['userId'] = $result["userId"];
 			$_SESSION['loggedIn'] = "TRUE";
-			
+
 			$saveUsername = $_POST["saveUsername"];
 
 			if ($saveUsername == "true") {
 				setcookie("savedUsername", $username, time() + 2592000, "/"); // 2592000 is equivalent to 30 days
 			}
-			
-			echo json_encode(array("result"=> "SUCCESS"));
+
+			echo json_encode(array("result"=> "SUCCESS", "fistname"=>$result["firstname"], "lastname"=> $result["lastname"], "tipoCuenta"=>$result["tipoCuenta"]));
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}
@@ -128,7 +129,7 @@
 
     	echo json_encode(array("success" => 'TRUE'));
 	}
-	
+
 	function getUser(){
 		session_start();
 		$userId = $_SESSION['userId'];
@@ -214,7 +215,7 @@
 		$friendId = $_POST["friendId"];
 
 		$result = attemptAcceptFriend($userId, $friendId);
-		
+
 		if ($result["status"] == 200){
 			echo json_encode(array("result"=> "SUCCESS"));
 		} else {
@@ -261,5 +262,5 @@
 			die("$dieMsg");
 		}
 	}
-	
+
 ?>

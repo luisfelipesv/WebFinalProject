@@ -1,0 +1,55 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="styles/index.css">
+  </head>
+  <body>
+    <div>
+      <form id = "signUpForm">
+            <fieldset>
+              <legend > Create cuenta nueva</legend>
+                <p> Name </br>
+                  <input type = "text" id = "firstName" class="formElement" />
+                  <span id="errorFirstName" class= "error"></span>
+                </p>
+                <p> Lastname </br>
+                  <input type = "text" id = "lastName" class="formElement"/>
+                  <span id="errorLastName" class="error"></span>
+                </p>
+                <p> Username </br>
+                  <input type = "text" id = "createUserName" class="formElement"/>
+                  <span id="errorCreateUserName" class="error"></span>
+                </p>
+                <p> email </br>
+                  <input type = "email" id = "email" class="formElement"/>
+                  <span id="errorEmail" class="error"></span>
+                </p>
+                <p> Password </br>
+                  <input type = "password" id = "password" class="formElement"/>
+                  <span id="errorPassword" class="error"></span>
+                </p>
+                <p> Password confirmation </br>
+                  <input type = "password" id = "passwordConfirmation" class="formElement"</br>
+                  <span id="errorPasswordConfirmation" class="error"></span>
+                  <span id="errorSamePassword" class="error">*The password don't match</span>
+                </p>
+                <p>Tipo de cuenta <span id="errorTipoCuenta"></span></br>
+
+                      <input id = "administrador" type = "radio" name  = "cuenta" value = "1" checked = "checked" /> Administrador </br>
+                    </p>
+                    <p>
+                      <input id = "empleado" type = "radio" name = "cuenta" value = "2" /> Empleado </br>
+                    </p>
+
+                </p>
+                <p>
+                  <input type = "submit" value = "Create account" id = "registerButton"/> </br>
+                </p>
+              </fieldset>
+</form>
+    </div>
+    <script type="text/javascript" src="js/jquery.js"></script>
+
+    <script type="text/javascript" src="js/register.js"></script>
+  </body>
+</html>
