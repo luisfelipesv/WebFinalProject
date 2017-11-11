@@ -1,10 +1,10 @@
 <?php
-
+	//funcion para hacer la conexion a la base de datos
 	function databaseConnection(){
 		$servername = 'localhost';
 		$username = 'root';
 		$password = 'root';
-		$dbname = 'JammerDB';
+		$dbname = 'motelSweet_db';
 
 		$conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -14,7 +14,7 @@
 
 		return $conn;
 	}
-
+	//funcion que intenta hacer el registro de nuevos usuarios
 	function attemptRegister($username, $email, $password, $firstName, $lastName, $country, $gender){
 		$conn = databaseConnection();
 		if ($conn == null){
