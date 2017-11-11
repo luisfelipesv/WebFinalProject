@@ -1,5 +1,5 @@
 <?php
-	
+
 	function databaseConnection(){
 		$servername = 'localhost';
 		$username = 'root';
@@ -11,7 +11,7 @@
 		if ($conn->connect_error){
 			return null;
 		}
-		
+
 		return $conn;
 	}
 
@@ -24,15 +24,15 @@
 		$sql = "SELECT *
 				FROM Users
 				WHERE username = '$username' OR email = '$email'";
-		
+
 		$result = $conn->query($sql);
 
 		// Validate that user doesn't exist
 		if ($result->num_rows > 0){
 			$conn->close();
 			return array(
-				"status"=>401, 
-				"headerMsg"=>"Username or email already in use, please select another one.", 
+				"status"=>401,
+				"headerMsg"=>"Username or email already in use, please select another one.",
 				"dieMsg"=>"Username or email already in use."
 			);
 		}
@@ -48,13 +48,13 @@
 			$response = array("userId" => $conn->insert_id,"status"=> 200);
 			$conn->close();
 			return $response;
-		} 
-		
+		}
+
 		$dieMsg = "Error: " . $insert . "\n" . mysql_error($conn);
 		$conn->close();
 		return array("status"=>402, "headerMsg"=>"Insert error.", "dieMsg"=>$dieMsg);
 	}
-	
+
 	function attemptLogin($username, $password){
 		$conn = databaseConnection();
 		if ($conn == null){
@@ -63,7 +63,7 @@
 
 		$sql = "SELECT *
 				FROM Users
-				WHERE username = '$username' AND userPassword = '$password'";
+				WHERE username = '$username' AND user_password = '$password'";
 
 		$result = $conn->query($sql);
 
@@ -79,8 +79,8 @@
 
 		$conn->close();
 		return array(
-			"status"=>401, 
-			"headerMsg"=>"User not found.", 
+			"status"=>401,
+			"headerMsg"=>"User not found.",
 			"dieMsg"=>"Wrong credentials provided"
 		);
 	}
@@ -100,13 +100,13 @@
 		// Validate user
 		if($result->num_rows > 0){
 			$ans = $result->fetch_assoc();
-			
+
 			$user = array(
-				"username"=>$ans["username"], 
+				"username"=>$ans["username"],
 				"email"=>$ans["email"],
-				"firstName"=>$ans["firstName"], 
+				"firstName"=>$ans["firstName"],
 				"lastName"=>$ans["lastName"],
-				"country"=>$ans["country"], 
+				"country"=>$ans["country"],
 				"gender"=>$ans["gender"]
 			);
 			$conn->close();
@@ -115,8 +115,8 @@
 
 		$conn->close();
 		return array(
-			"status"=>401, 
-			"headerMsg"=>"User not found.", 
+			"status"=>401,
+			"headerMsg"=>"User not found.",
 			"dieMsg"=>"Wrong credentials provided"
 		);
 	}
@@ -139,8 +139,8 @@
 		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 		$conn->close();
 		return array(
-			"status"=>401, 
-			"headerMsg"=>"Insert error in DB.", 
+			"status"=>401,
+			"headerMsg"=>"Insert error in DB.",
 			"dieMsg"=> $dieMsg
 		);
 	}
@@ -164,21 +164,21 @@
 				$comment = array(
 					"content"=>$row["content"],
 					"username"=>$row["username"],
-					"firstName"=>$row["firstName"], 
+					"firstName"=>$row["firstName"],
 					"lastName"=>$row["lastName"]);
 
 				array_push($comments,$comment);
-			}		
+			}
 
 			$conn->close();
 			return array("data" => $comments, "status"=>200);
-		} 
-		
-		
+		}
+
+
 		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 		$conn->close();
 		return array("status"=>401, "headerMsg"=>"Insert error in Database.", "dieMsg"=>$dieMsg);
-		
+
 	}
 
 	function attemptGetFriends($userId){
@@ -201,13 +201,13 @@
 					"id"=>$row["id"],
 					"username"=>$row["username"],
 					"email"=>$row["email"],
-					"firstName"=>$row["firstName"], 
+					"firstName"=>$row["firstName"],
 					"lastName"=>$row["lastName"],
 					"country"=>$row["country"],
 					"gender"=>$row["gender"]);
 
 				array_push($friends,$friend);
-			}		
+			}
 
 			$conn->close();
 			return array("data" => $friends, "status"=>200);
@@ -238,13 +238,13 @@
 					"id"=>$row["id"],
 					"username"=>$row["username"],
 					"email"=>$row["email"],
-					"firstName"=>$row["firstName"], 
+					"firstName"=>$row["firstName"],
 					"lastName"=>$row["lastName"],
 					"country"=>$row["country"],
 					"gender"=>$row["gender"]);
 
 				array_push($friends,$friend);
-			}		
+			}
 
 			$conn->close();
 			return array("data" => $friends, "status"=>200);
@@ -274,8 +274,8 @@
 		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 		$conn->close();
 		return array(
-			"status"=>401, 
-			"headerMsg"=>"Insert error in DB.", 
+			"status"=>401,
+			"headerMsg"=>"Insert error in DB.",
 			"dieMsg"=> $dieMsg
 		);
 	}
@@ -295,8 +295,8 @@
 			$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 			$conn->close();
 			return array(
-				"status"=>401, 
-				"headerMsg"=>"Couldn't update FriendRequest on DB.", 
+				"status"=>401,
+				"headerMsg"=>"Couldn't update FriendRequest on DB.",
 				"dieMsg"=> $dieMsg
 			);
 		}
@@ -314,8 +314,8 @@
 		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 		$conn->close();
 		return array(
-			"status"=>402, 
-			"headerMsg"=>"Couldn't insert Friendship on DB.", 
+			"status"=>402,
+			"headerMsg"=>"Couldn't insert Friendship on DB.",
 			"dieMsg"=> $dieMsg
 		);
 	}
@@ -339,8 +339,8 @@
 		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 		$conn->close();
 		return array(
-			"status"=>401, 
-			"headerMsg"=>"Couldn't update FriendRequest on DB.", 
+			"status"=>401,
+			"headerMsg"=>"Couldn't update FriendRequest on DB.",
 			"dieMsg"=> $dieMsg
 		);
 	}
@@ -353,12 +353,12 @@
 
 		$sql = "SELECT u.id, u.username, u.email, u.firstName, u.lastName
 				FROM Users u
-				WHERE (u.username LIKE '%$text%' OR u.email LIKE '%$text%') 
+				WHERE (u.username LIKE '%$text%' OR u.email LIKE '%$text%')
 					AND NOT u.id = '$userId'
 					AND NOT EXISTS (
 						SELECT *
 						FROM Friendship f
-						WHERE (u.id = f.userId_1 AND '$userId' = f.userId_2) 
+						WHERE (u.id = f.userId_1 AND '$userId' = f.userId_2)
 							OR (u.id = f.userId_2 AND '$userId' = f.userId_1))
 					AND NOT EXISTS (
 						SELECT *
@@ -374,11 +374,11 @@
 					"id"=>$row["id"],
 					"username"=>$row["username"],
 					"email"=>$row["email"],
-					"firstName"=>$row["firstName"], 
+					"firstName"=>$row["firstName"],
 					"lastName"=>$row["lastName"]);
 
 				array_push($users,$user);
-			}		
+			}
 
 			$conn->close();
 			return array("data" => $users, "status"=>200);
@@ -387,5 +387,5 @@
 		$conn->close();
 		return array("status"=>401, "headerMsg"=>"No users with that name or email", "dieMsg"=>"No users");
 	}
-	
+
 ?>
