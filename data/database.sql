@@ -15,17 +15,17 @@ CREATE TABLE motelSweet_db.Rooms (
 	id INT NOT NULL PRIMARY KEY,
 	type INT NOT NULL, -- 1, 2 or 3
 	price INT NOT NULL, -- linked with roomType
-    status INT NOT NULL, -- 1: available, 2: occupied, 3: inService, 4: inRepair
+    status INT NOT NULL -- 1: available, 2: occupied, 3: inService, 4: inRepair
 );
 
 CREATE TABLE motelSweet_db.BookingHistory (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	startDate TIMESTAMP NOT NULL,
 	endDate TIMESTAMP,
-	rooomId INT NOT NULL,
+	roomId INT NOT NULL,
     earning INT NOT NULL,
     extraEarning INT,
-    FOREIGN KEY (roomId) REFERENCES Rooms(id),
+    FOREIGN KEY (roomId) REFERENCES Rooms(id)
 );
 
 INSERT INTO Users(username, userPassword, email, firstName, lastName, admin)
@@ -61,4 +61,3 @@ VALUES  (1, 1, 100, 1),
 		(28, 3, 300, 1),
 		(29, 3, 300, 1),
 		(30, 3, 300, 1);
-
