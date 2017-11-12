@@ -85,6 +85,49 @@
 		);
 	}
 
+	function attemptGetRooms(){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$sql = "SELECT *
+				FROM Rooms
+				
+				ORDER BY id ASC";
+
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0){
+			$rooms = array();
+			while ($row = $result->fetch_assoc()){
+				$room = array(
+					"id"=>$row["id"],
+					"type"=>$row["type"],
+					"price"=>$row["price"],
+					"status"=>$row["status"]);
+
+				array_push($rooms,$room);
+			}
+
+			$conn->close();
+			return array("data" => $rooms, "status"=>200);
+		}
+
+		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
+		$conn->close();
+		return array("status"=>401, "headerMsg"=>"Error in database", "dieMsg"=>$dieMsg);
+	}
+
+	function attemptGetAvailableRoom($roomId){
+
+	}
+
+	function attemptGetOccupiedRoom($roomId){
+
+	}
+
+	/*
 	function attemptGetUser($userId){
 		$conn = databaseConnection();
 		if ($conn == null){
@@ -387,5 +430,6 @@
 		$conn->close();
 		return array("status"=>401, "headerMsg"=>"No users with that name or email", "dieMsg"=>"No users");
 	}
+	*/
 
 ?>

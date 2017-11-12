@@ -20,6 +20,7 @@ CREATE TABLE motelSweet_db.Rooms (
 CREATE TABLE motelSweet_db.BookingHistory (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	startDate TIMESTAMP NOT NULL,
+	hoursBooked INT NOT NULL,
 	endDate TIMESTAMP,
 	roomId INT NOT NULL,
     earning INT NOT NULL,

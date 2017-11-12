@@ -21,6 +21,24 @@
 		case "logOut":
 			logOut();
 			break;
+		case "isAdmin":
+			isAdmin();
+			break;
+		case "getRooms":
+			getRooms();
+			break;
+
+		case "getAvailableRoom":
+			getAvailableRoom();
+			break;
+
+		case "getOccupiedRoom":
+			getOccupiedRoom();
+			break;
+
+/*
+
+
 		case "getUser":
 			getUser();
 			break;
@@ -49,6 +67,7 @@
 		case "searchUser":
 			searchUser();
 			break;
+			*/
 	}
 
 	// Session logged
@@ -107,8 +126,13 @@
 			if ($saveUsername == "true") {
 				setcookie("savedUsername", $username, time() + 2592000, "/"); // 2592000 is equivalent to 30 days
 			}
+			if ($result["admin"] == 1) {
+				$_SESSION['admin'] = "TRUE";
+			} else {
+				$_SESSION['admin'] = "FALSE";
+			}
 
-			echo json_encode(array("result"=> "SUCCESS", "admin"=>$result["admin"]));
+			echo json_encode(array("result"=> "SUCCESS"));
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}
@@ -119,11 +143,41 @@
 
     	$_SESSION['loggedIn'] = 'FALSE';
     	$_SESSION['userId'] = -1;
+    	$_SESSION['admin'] = '';
    		setcookie("savedUsername", "", time() - 60 , "/"); //delete cookie
 
     	echo json_encode(array("success" => 'TRUE'));
 	}
 
+	function isAdmin() {
+		session_start();
+		if($_SESSION['admin'] == "TRUE"){
+      		echo json_encode(array("result"=> "SUCCESS"));
+    	}else{
+      		genericErrorFunction(401, "Isn't admin", "User is not admin");
+    	}
+	}
+
+	function getRooms(){
+		$result = attemptGetRooms();
+
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getAvailableRoom(){
+
+	}
+
+	function getOccupiedRoom(){
+
+	}
+
+
+/*
 	function getUser(){
 		session_start();
 		$userId = $_SESSION['userId'];
@@ -244,7 +298,7 @@
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}
 	}
-
+*/
 
 	// ERROR HANDLER
 	function genericErrorFunction($status, $headerMsg, $dieMsg){
