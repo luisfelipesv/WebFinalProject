@@ -147,7 +147,7 @@ function presentRoomCell(room) {
 		case 'inService':
 			presentInServiceRoom(room);
 			break;
-		case 'inRepair';
+		case 'inRepair':
 			presentInRepairRoom(room);
 			break;
 	}
@@ -161,9 +161,9 @@ function presentOccupiedRoom(room) {
 	addRoomNumber(room);
 
    	var newHtml = '<div class="roomBottomInfo">';
-    newHtml = '<img class="roomImg" src="assets/clock.svg" alt="clock">';
-    newHtml = '<div class="roomHour">' + room.endHour + '</div>';
-    newHtml = '</div>';
+    newHtml += '<img class="roomImg" src="assets/clock.svg" alt="clock">';
+    newHtml += '<div class="roomHour">' + room.endHour + '</div>';
+    newHtml += '</div>';
 	$("#roomId").append(newHtml);
 }
 
@@ -200,6 +200,16 @@ function showModalForRoom(roomId, status) {
 }
 
 function showAvailableModal(roomId) {
+
+
+	var newHtml;
+	newHtml += '<div class="modalHeader">';
+        newHtml += '<div id="modalTitle" class="headerText">Room </div>';
+    newHtml += '</div>';
+    newHtml += '<div class="modalBody">'
+    	newHtml += '<p id="modalMessage">Some text in the Modal Body</p>';
+        newHtml += '<button id="modalBtn" class="roundedBtn" type="button" >OK</button>';
+    newHtml += '</div>';
 	
 }
 
@@ -213,6 +223,15 @@ function showInServiceModal(roomId) {
 
 function showInRepairModal(roomId) {
 
+}
+
+function modalHeader(roomId) {
+	var newHtml;
+	newHtml += '<div class="modalHeader">';
+        newHtml += '<div id="modalTitle" class="headerText">Room </div>';
+    newHtml += '</div>';
+
+    return newHtml;
 }
 
 

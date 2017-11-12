@@ -79,17 +79,11 @@
 		$password = $_POST["userPassword"];
 		$firstName = $_POST["firstName"];
         $lastName = $_POST["lastName"];
-        $country = $_POST["country"];
-		$gender = $_POST["gender"];
-		$tipoCuenta = $_POST["tipoCuenta"];
+		$admin = $_POST["admin"];
 
-		$result = attemptRegister($username, $email, $password, $firstName, $lastName, $country, $gender, $tipoCuenta);
+		$result = attemptRegister($username, $email, $password, $firstName, $lastName, $admin);
 
       	if ($result["status"] == 200){
-      		session_start();
-      		$_SESSION['loggedIn'] = "TRUE";
-      		$_SESSION['userId'] = $result["userId"];
-
 			echo json_encode(array("result"=> "SUCCESS"));
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
@@ -114,7 +108,7 @@
 				setcookie("savedUsername", $username, time() + 2592000, "/"); // 2592000 is equivalent to 30 days
 			}
 
-			echo json_encode(array("result"=> "SUCCESS", "fistname"=>$result["firstname"], "lastname"=> $result["lastname"], "tipoCuenta"=>$result["tipoCuenta"]));
+			echo json_encode(array("result"=> "SUCCESS", "admin"=>$result["admin"]));
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}

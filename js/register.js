@@ -1,38 +1,132 @@
 $(document).ready(function(){
-  $("#registerButton").click(function(){
-    var username = $("#createUserName").val();
-    var password = $("#password").val();
-    var firstname = $("#firstName").val();
-    var lastname = $("#lastName").val();
-    var email = $("#email").val();
-    var passwordConfirmation = $("#passwordConfirmation").val();
-    var tipoCuenta = $("input[name='cuenta']").first().is(":checked") ? "administrador" : "empleado";
 
-    var jsonToSend = {
-      "uName": username,
-      "uPassword": password,
-      "fName": firstname,
-      "lName": lastname,
-      "email": email,
-      "passwordConf": passwordConfirmation,
-      "tipoCuenta": tipoCuenta,
-      "action": "registerUser"
-    };
 
-    $.ajax({
-      url: "./Data/applicationLayer.php",
-      type: "POST",
-      data: jsonToSend,
-      ContentType: "application/json",
-      dataType: "json",
-      success: function(dataReceived){
-        alert("Welcome ");
-        window.location = "home_Admin.html";
-      },
-      error: function(errorMessage){
-        alert(errorMessage.statusText);
-        console.log("error");
+  // Action when clicking the sign up button
+  $("#signUpBtn").click(function(){
+    var validAccount = true;
+    var emptyPassword = false;
+
+    // Validate first name
+    if (!validateInput($("#firstName"), $("#errorFirstName"))){
+      validAccount = false;
+    }
+    // Validate last name
+    if (!validateInput($("#lastName"), $("#errorLastName"))){
+      validAccount = false;
+    } 
+    // Validate username
+    if (!validateInput($("#username"), $("#errorUsername"))){
+      validAccount = false;
+    } 
+    //Validate email
+    if(!validateInput($("#email"), $("#errorEmail"))) {
+      validAccount = false;
+    }
+      
+    // Validate password
+    if (!validateInput($("#password"), $("#errorPassword"))){
+      validAccount = false;
+      emptyPassword = true;
+    }
+    // Validate password confirmation
+    if (!validateInput($("#passwordConfirmation"), $("#errorPasswordConfirmation"))){
+      validAccount = false;
+      emptyPassword = true;
+    }
+
+    // Validate the radio buttons of gender
+    if (!validateRadio($("input[name='job']"), $("#errorJon"))){
+      validAccount = false;
+    }
+
+    if (!emptyPassword) {
+      // Validate same password
+      if (!validatePasswords($("#password"),$("#passwordConfirmation"),$("#errorSamePassword"))){
+        validAccount = false;
       }
-    });
+    } else {
+      $("#errorSamePassword").hide()
+    }
+
+    if (validAccount) {
+      registerUser($("#username"), $("#password"), $("#email"), $("#firstName"), $("#lastName"), $("input[name='job']"), $("#errorSignUp"));
+    }
+
+    return false;
   });
 });
+
+
+// Generic function to validate an input of type text/password 
+// Requires the element to be validated and the element of the error span to display the message
+function validateInput($field, $errorMsg){
+  if ($field.val() == "") {
+    $errorMsg.show();
+    $field.addClass("formElementError");
+    return false;
+  } 
+
+  $errorMsg.hide();
+  $field.addClass("formElement")
+  $field.removeClass("formElementError")  
+  return true
+}
+
+// Generic function to validate two password inputs
+// Requires both of the password inputs and the element of the error span to display the message
+function validatePasswords($field1, $field2, $errorMsg){
+  if ($field1.val() != $field2.val()){
+    $errorMsg.show()
+    return false
+  } 
+
+  $errorMsg.hide()
+  return true
+}
+
+// Generic function to validate a group of radio buttons
+// Requires the group of radio buttons and the element of the error span to display the message
+function validateRadio($radioElements, $errorMsg){
+
+  if (!$radioElements.is(":checked")){
+    $errorMsg.show()
+    return false
+  }
+  
+  $errorMsg.hide()
+  return true
+}
+
+function registerUser($usernameField, $passwordField, $emailField, $firstNameField, $lastNameField, $jobs, $errorMsg) {
+  $errorMsg.hide();
+
+  // Admin 1, Female 0
+  var admin = $jobs.first().is(":checked") ? 1 : 0;
+
+  var jsonToSend = {
+    "username": $usernameField.val(), 
+    "userPassword": $passwordField.val(),
+    "email": $emailField.val(),
+    "firstName": $firstNameField.val(),
+    "lastName": $lastNameField.val(),
+    "admin": admin, 
+    "action": "registerUser"
+  };
+
+  $.ajax({
+    url: "./data/applicationLayer.php",
+    type: "POST",
+    data: jsonToSend,
+    ContentType: "application/json",
+    dataType: "json",
+    success: function(data){
+      window.location.replace("home.html");
+    },
+    error: function(error){
+      console.log(error.statusText);
+      
+    }
+  });
+}
+
+

@@ -15,7 +15,7 @@
 		return $conn;
 	}
 	//funcion que intenta hacer el registro de nuevos usuarios
-	function attemptRegister($username, $email, $password, $firstName, $lastName, $country, $gender, $tipoCuenta){
+	function attemptRegister($username, $email, $password, $firstName, $lastName, $admin){
 		$conn = databaseConnection();
 		if ($conn == null){
 			return array("status"=> 500);
@@ -38,14 +38,14 @@
 		}
 
 		// Insert new user
-		$insert = "INSERT INTO Users(username, userPassword, email, firstName, lastName, tipoCuenta)
-					VALUES ('$username', '$password', '$email', '$firstName', '$lastName', '$country', '$gender', '$tipoCuenta')";
+		$insert = "INSERT INTO Users(username, userPassword, email, firstName, lastName, admin)
+					VALUES ('$username', '$password', '$email', '$firstName', '$lastName', '$admin')";
 
 		$insertRes = $conn->query($insert);
 
 		// Validate insert
 		if ($insertRes){
-			$response = array("userId" => $conn->insert_id,"status"=> 200);
+			$response = array("status"=> 200);
 			$conn->close();
 			return $response;
 		}
@@ -63,7 +63,7 @@
 
 		$sql = "SELECT *
 				FROM Users
-				WHERE username = '$username' AND user_password = '$password'";
+				WHERE username = '$username' AND userPassword = '$password'";
 
 		$result = $conn->query($sql);
 
@@ -72,12 +72,9 @@
 			$ans = $result->fetch_assoc();
 			$conn->close();
 			return array(
-				"firstname"=> $ans["first_name"],
-				"lastname"=> $ans["last_name"],
-				"tipoCuenta"=> $ans["tipoCuenta"],
-				"userId"=> $ans["id"],
-				"status"=> 200
-			);
+				"userId"=> $ans["person_id"], 
+				"admin"=> $ans["admin"],
+				"status"=> 200);
 		}
 
 		$conn->close();

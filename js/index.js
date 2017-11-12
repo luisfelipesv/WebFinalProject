@@ -62,7 +62,7 @@ function logIn($usernameField, $passwordField, $rememberCheckbox,$errorMsg){
 		dataType: "json",
 		success: function(data){
 			console.log(data);
-			if(data.tipoCuenta == "administrador")
+			if(data.admin == "1")
 			{
 				window.location.replace("home_Admin.html");
 			} else {
