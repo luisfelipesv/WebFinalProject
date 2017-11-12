@@ -1,0 +1,133 @@
+/* Page */
+.page {
+  background-color: #F7F7F7;
+  width: 600px;
+  height: 100vh;
+  display: block;
+  margin-top: 62px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+p{
+ 
+  color: black;
+
+}
+
+span.error {
+    color: #D0021B;
+    display: none;
+}
+
+.formElement{
+    font-size: 1em;
+    padding: 5px 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formElementError{
+    font-size: 1em;
+    padding: 5px 10px;
+    width: 300px;
+    border: 1px solid #D0021B;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Users section */
+.userDiv {
+  background-color: #FFF;
+  text-align: left;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  padding: 0px;
+}
+
+.leftInfo {
+  display: inline-flex;
+
+}
+
+.rightInfo {
+  float: right;
+  display: inline-flex;
+  align-items: center;
+  height: 79px;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.userInfo {
+   display: inline-block;
+}
+
+#profileImg {
+  color: blue;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+  display: inline-block;
+  margin-top: 16px;
+  margin-left: 16px;
+  text-align: center;
+  vertical-align:top;
+}
+
+.username {
+  font-size: 14px;
+  font-weight: 500;
+  color: gray;
+  display: inline-block;
+  margin-top: 16px;
+  margin-left: 8px;
+  vertical-align:top;
+}
+
+.user {
+  display: block;
+  height: 40px;
+}
+
+.email {
+  font-size: 14px;
+  color: black;
+  margin-top: 8px;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  vertical-align:top;
+  display: block;
+}
+
+.lineDivider {
+  width: 100%;
+  height: 1px;
+  background-color: #F7F7F7;
+  margin: 0px;
+  padding: 0px;
+}
+
+.addUserBtn {
+  height:100%;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border: 0px;
+  margin: 5px 16px 0px 0px;
+  background-color: white;
+  padding: 0px;
+  cursor:pointer;
+}
+
+
+
+

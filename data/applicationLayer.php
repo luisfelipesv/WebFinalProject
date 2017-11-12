@@ -31,9 +31,26 @@
 		case "getAvailableRoom":
 			getAvailableRoom();
 			break;
-
 		case "getOccupiedRoom":
 			getOccupiedRoom();
+			break;
+		case "bookRoom":
+			bookRoom();
+			break;
+		case "checkoutRoom":
+			checkoutRoom();
+			break;
+		case "repairRoom":
+			setRoomInRepair();
+			break;
+		case "availableRoom":
+			makeRoomAvailable();
+			break;
+		case "getUsers":
+			getUsers();
+			break;
+		case "deleteUser":
+			deleteUser();
 			break;
 
 /*
@@ -169,11 +186,37 @@
 	}
 
 	function getAvailableRoom(){
-
+		$roomId= $_POST["roomId"];
 	}
 
 	function getOccupiedRoom(){
+		$roomId= $_POST["roomId"];
+	}
+	function bookRoom(){
+		$roomId= $_POST["roomId"];
+		$hours = $_POST["hours"];
+	}
+	function checkoutRoom(){
+		$roomId= $_POST["roomId"];
+		$extrahours = $_POST["extrahours"];
+	}
 
+	function setRoomInRepair(){
+		$roomId= $_POST["roomId"];
+
+	}
+
+	function makeRoomAvailable(){
+		$roomId= $_POST["roomId"];
+
+	}
+
+	function getUsers(){
+
+	}
+
+	function deleteUser(){
+		$userId = $_POST["userId"];
 	}
 
 

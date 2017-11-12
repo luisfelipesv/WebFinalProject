@@ -310,6 +310,15 @@ function modalHeader(roomId) {
 }
 
 
+function bookRoom() {
+
+}
+
+function checkoutRoom() {
+
+}
+
+
  
 
 
