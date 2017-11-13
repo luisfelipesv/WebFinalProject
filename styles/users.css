@@ -32,7 +32,7 @@ span.error {
 }
 
 .formElement{
-    font-size: 1em;
+    font-size: 14px;
     padding: 5px 10px;
     width: 300px;
     border: 1px solid #ccc;
@@ -41,7 +41,7 @@ span.error {
     border: 1px solid #D9D9D9;
     border-radius: 10px;
     box-sizing: border-box;
-    height: 25px;
+    height: 32px;
 }
 
 .formElementError{
@@ -143,5 +143,16 @@ span.error {
 }
 
 
+.deleteBtn {
+  display: inline-block;
+  background-color: #BF1F41;
+}
 
+.deleteBtn:hover {
+  background-color: #BF1F41;
+}
+
+.deleteBtn:active {
+  color: #BF1F41;
+}
 

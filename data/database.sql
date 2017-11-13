@@ -35,7 +35,7 @@ VALUES  (1, '2017-04-04 5:00:00', 2, '2017-04-04 7:00:00', 200),
 		(11, '2017-04-04 5:00:00', 2, '2017-04-04 7:00:00', 400);
 
 INSERT INTO Users(username, userPassword, email, firstName, lastName, admin)
-VALUES  ('admin', 'adminpassword', 'admin@mail.com', 'Nombre', 'apellido', 1);
+VALUES  ('admin', 'admin', 'admin@mail.com', 'Nombre', 'Apellido', 1);
 
 INSERT INTO Rooms(id, type, price, status, startDate, endDate)
 VALUES  (1, 1, 100, 1, '2000-01-01 01:01:01', '2000-01-01 01:01:01'),

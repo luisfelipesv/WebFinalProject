@@ -1,6 +1,21 @@
 // Check active session
 $(document).ready(function(){
+	$.ajax({
+        url: "./data/applicationLayer.php",
+        type: "POST",
+        data: {"action": "getUsername"},
+        ContentType: "application/json",
+        dataType: "json",
+        success: function(data){
+          //alert("Cookie set: " + $("#userName").val(dataRecieved.cookieUsername));
+          console.log(data);
+          $("#usernameLogIn").val(data.username);
+        },
+        error: function(error){
+          console.log(error.statusText);
 
+        }
+      });
 
 	// Action when clicking the log in button
 	$("#logInBtn").click(function(){

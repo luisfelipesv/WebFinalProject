@@ -21,22 +21,7 @@ $(document).ready(function(){
 			window.location.replace("index.html");
 		}
 	});
-	$("#profileBtn").click(function(){
-    $.ajax({
-      url: "./data/applicationLayer.php",
-      type: "POST",
-      data: {"action": "logOut"},
-      ContentType: "application/json",
-      dataType: "json",
-      success: function(data){
-        alert("See you later");
-        window.location.replace("index.html");
-      },
-      error: function(error){
-        console.log("Error");
-      }
-    });
-  });
+	
 	// MARK: - Actions
 
 	// Search functions
@@ -83,7 +68,6 @@ function logout(){
     ContentType: "application/json",
     dataType: "json",
     success: function(data){
-      alert("See you later");
       window.location.replace("index.html");
     },
     error: function(error){

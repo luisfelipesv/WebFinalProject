@@ -159,6 +159,14 @@ a.active{
   cursor:pointer;
 
 }
+.navMenuBtn {
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  cursor:pointer;
+  border: 0px;
+  background-color: transparent;
+}
 
 .roundedBtn:hover {
   background-color: #389F88;

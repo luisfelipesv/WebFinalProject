@@ -38,6 +38,7 @@
   font-weight: bold;
   height: 110px;
   width: 180px;
+  cursor:pointer;
 }
 
 .roomDiv.available {

@@ -111,7 +111,7 @@ function presentUser(user) {
     newHtml += '<div> ID: ' + user.id + '</div>';
     newHtml += '<div> Username: ' + user.username + '</div>';
     newHtml += '<div> Password: ' + user.password + '</div>';
-    newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="deleteUser(' + user.id + ')">DELETE</button>';
+    newHtml += '<button class="roundedBtn deleteBtn" type="button" onclick="deleteUser(' + user.id + ')">DELETE</button>';
     newHtml += '</div>';
     $(".usersSection").append(newHtml);
 }
@@ -180,7 +180,6 @@ function logout(){
     ContentType: "application/json",
     dataType: "json",
     success: function(data){
-      alert("See you later");
       window.location.replace("index.html");
     },
     error: function(error){

@@ -6,13 +6,58 @@
 }
 
 body{
-  font-family: Verdana, sans-serif;;
-  font-size: 15px;
-  color: gray;
+  font-weight: 600;
+  font-size: 18px;
+  font-family:'Avenir Next';
+  color: white;
   margin: 0;
   padding: 0;
-  /*background-image: url(parque.jpg);*/
+  background-color: #2E6DBA;
+  text-align: center;
 }
+.title {
+font-size: 30px;
+margin: 50px 50px;
+}
+
+div {
+  margin: 20px 20px;
+}
+
+.textField {
+  font-size: 14px;
+  padding: 5px 10px;
+  margin: auto 16px;
+  height: 46px;
+  width: 450px;
+  border: 1px solid #D9D9D9;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.roundedBtn {
+  height: 35px;
+  margin: auto 0px auto 0px;
+  padding: 0px 15px;
+  background-color: #50E3C2;
+  border-radius: 17.5px;
+  border: 0px;
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  cursor:pointer;
+
+}
+
+
+.roundedBtn:hover {
+  background-color: #389F88;
+}
+
+.roundedBtn:active {
+  color: #B3B3B3;
+}
+
 
 h1{
   background-color: #0E3C7C;
