@@ -227,7 +227,23 @@ function showOccupiedModal(roomId) {
 		dataType: "json",
 		success: function(data){
 			console.log(data);
-			var newHtml = modalHeader(roomId);
+    		var startDate = new (Function.prototype.bind.apply(Date, [null].concat(data.startDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
+			var startTime = startDate.getHours() + ":" + startDate.getMinutes();
+
+    		var endDate = new (Function.prototype.bind.apply(Date, [null].concat(data.endDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
+			var endTime = endDate.getHours() + ":" + endDate.getMinutes();
+
+    		var newHtml = modalHeader(roomId);
+   		 	newHtml += '<div class="modalBody">'
+   		 		newHtml += '<p class="modalMessage">Entrada-Salida:</p>';
+   		 		newHtml += '<p class="modalMessage">' + startTime + ' - '+ endTime +'</p>';
+    			newHtml += '<p class="modalMessage">Horas:</p>';
+    			newHtml += '<input id="extraHoursTf" class="textField" type="text" placeholder="Horas extras..." onchange="updateCheckoutPrice()">';
+    			newHtml += '<p class="modalMessage">Costo:</p>';
+    			newHtml += '<p id="checkoutPrice" class="modalMessage" cost="'+ data.price +'"">' + data.price + '</p>';
+        		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="checkoutRoom(' + roomId + ')">OK</button>';
+    		newHtml += '</div>';
+			$("#occupiedModal").html(newHtml);
 			$("#occupiedModal").show();
 		},
 		error: function(error){
@@ -238,19 +254,28 @@ function showOccupiedModal(roomId) {
 
 function showInServiceModal(roomId) {
 	var newHtml = modalHeader(roomId);
+	newHtml += '<div class="modalBody">'
+   		newHtml += '<p class="modalMessage">Cambiar estado del cuarto</p>';
+   		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="makeRoomAvailable(' + roomId + ')">PONER DISPONIBLE</button>';
+   		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="changeRoomToInRepair(' + roomId + ')">PONER EN REPARACION</button>';
+    newHtml += '</div>';
 	$("#inServiceModal").html(newHtml);
 	$("#inServiceModal").show();
 }
 
 function showInRepairModal(roomId) {
 	var newHtml = modalHeader(roomId);
+	newHtml += '<div class="modalBody">'
+   		newHtml += '<p class="modalMessage">Cambiar cuarto a disponible</p>';
+   		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="makeRoomAvailable(' + roomId + ')">PONER DISPONIBLE</button>';
+    newHtml += '</div>';
 	$("#inRepairModal").html(newHtml);
 	$("#inRepairModal").show();
 }
 
 function modalHeader(roomId) {
 	var newHtml = '<div class="modalHeader">';
-    newHtml += '<div class="headerText">Room ' + roomId + '</div>';
+    newHtml += '<div class="headerText">Cuarto ' + roomId + '</div>';
     newHtml += '<span class="headerBtn"><button class="closeModalBtn" type="button" onclick="hideModals()" >X</button></div>';
     newHtml += '</div>';
 
@@ -275,7 +300,7 @@ function bookRoom(roomId) {
 		dataType: "json",
 		success: function(data){
 			loadRooms();
-			$("#availableModal").hide();
+			hideModals();
 		},
 		error: function(error){
 			console.log(error.statusText);
@@ -284,9 +309,71 @@ function bookRoom(roomId) {
 	
 }
 
-function checkoutRoom($roomId) {
-	loadRooms();
-	$("#occupiedModal").hide();
+function checkoutRoom(roomId) {
+	var jsonToSend = {
+		"roomId": roomId,
+		"extraHours": $("#extraHoursTf").val(),
+		"extraEarning": $("#checkoutPrice").html(),
+		"action": "checkoutRoom"
+	};
+	
+	$.ajax({
+		url: "./data/applicationLayer.php",
+		type: "POST",
+		data: jsonToSend,
+		ContentType: "application/json",
+		dataType: "json",
+		success: function(data){
+			loadRooms();
+			hideModals();
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+function makeRoomAvailable(roomId){
+	var jsonToSend = {
+		"roomId": roomId,
+		"action": "availableRoom"
+	};
+	$.ajax({
+		url: "./data/applicationLayer.php",
+		type: "POST",
+		data: jsonToSend,
+		ContentType: "application/json",
+		dataType: "json",
+		success: function(data){
+			loadRooms();
+			hideModals();
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+function changeRoomToInRepair(roomId){
+	var jsonToSend = {
+		"roomId": roomId,
+		"action": "repairRoom"
+	};
+
+	$.ajax({
+		url: "./data/applicationLayer.php",
+		type: "POST",
+		data: jsonToSend,
+		ContentType: "application/json",
+		dataType: "json",
+		success: function(data){
+			loadRooms();
+			hideModals();
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
 }
 
 function updateBookingPrice() {
@@ -297,6 +384,12 @@ function updateBookingPrice() {
 }
 
 
+function updateCheckoutPrice() {
+	$cost = $("#checkoutPrice").attr("cost");
+	$earning = $cost * $("#extraHoursTf").val();
+	console.log($earning );
+	$("#checkoutPrice").html($earning);
+}
 
  
 

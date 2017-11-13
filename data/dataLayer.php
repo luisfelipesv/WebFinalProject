@@ -180,6 +180,7 @@
 				"id"=>$ans["id"],
 				"type"=>$ans["type"],
 				"price"=>$ans["price"],
+				"startDate"=>$ans["startDate"],
 				"endDate"=>$ans["endDate"]
 			);
 
@@ -204,7 +205,7 @@
 		$startDate = $now->format('Y-m-d H:i:s');
 
 		$sql = "INSERT INTO BookingHistory(roomId, startDate, hoursBooked, earning)
-				VALUES ('$roomId', '$startDate', '$hours', $earning)";
+				VALUES ('$roomId', '$startDate', '$hours', '$earning')";
 
 		$result = $conn->query($sql);
 
@@ -213,8 +214,9 @@
 			$now->add(new DateInterval("PT{$hours}H"));
 			$endDate = $now->format('Y-m-d H:i:s');
 
-			$update = "UPDATE Rooms
-					   SET status = 2, startDate = '$starDate', endDate = '$endDate'
+
+			$update = "UPDATE Rooms 
+					   SET status = 2, startDate = '$startDate', endDate = '$endDate'
 					   WHERE id = '$roomId'";
 
 			$updateResult = $conn->query($update);
@@ -241,8 +243,11 @@
 
 		$result = $conn->query($sql);
 
+
 		if ($result->num_rows > 0) {
 			$ans = $result->fetch_assoc();
+
+			
 
 			// Get values
 			$bookingId = $ans["id"];
@@ -254,7 +259,7 @@
 			$hoursBooked = $hoursBooked + $extraHours;
 			$earning = $earning + $extraEarning;
 			$startDate->add(new DateInterval("PT{$hoursBooked}H"));
-			$endDate = $startDate-->format('Y-m-d H:i:s');
+			$endDate = $startDate->format('Y-m-d H:i:s');
 
 			$updateBooking = "UPDATE BookingHistory
 							  SET hoursBooked = '$hoursBooked', endDate = '$endDate', earning = '$earning'
@@ -263,8 +268,9 @@
 			$bookingResult = $conn->query($updateBooking);
 
 
-			$updateRoom = "UPDATE Rooms
-					   	   SET status = 3, ,startDate = '2000-01-01 01:01:01', endDate = '2000-01-01 01:01:01'
+
+			$updateRoom = "UPDATE Rooms 
+					   	   SET status = 3, startDate = '2000-01-01 01:01:01', endDate = '2000-01-01 01:01:01'
 					       WHERE id = '$roomId'";
 
 			$updateResult = $conn->query($updateRoom);
