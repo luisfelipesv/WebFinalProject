@@ -52,39 +52,10 @@
 		case "deleteUser":
 			deleteUser();
 			break;
-
-/*
-
-
-		case "getUser":
-			getUser();
-			break;
-		case "postComment":
-			postComment();
-			break;
-		case "getComments":
-			getComments();
+		case "searchRoom":
+			searchRoom();
 			break;
 
-		case "getFriends":
-			getFriends();
-			break;
-		case "getRequests":
-			getRequests();
-			break;
-		case "requestFriendship":
-			requestFriendship();
-			break;
-		case "acceptFriendship":
-			acceptFriendship();
-			break;
-		case "rejectFriendship":
-			rejectFriendship();
-			break;
-		case "searchUser":
-			searchUser();
-			break;
-			*/
 	}
 
 	// Session logged
@@ -186,61 +157,93 @@
 	}
 
 	function getAvailableRoom(){
-		$roomId= $_POST["roomId"];
+		$roomId = $_POST["roomId"];
+
+		$result = attemptGetAvailableRoom($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
 	}
 
 	function getOccupiedRoom(){
-		$roomId= $_POST["roomId"];
+		$roomId = $_POST["roomId"];
+
+		$result = attemptGetOccupiedRoom($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
 	}
 	function bookRoom(){
-		$roomId= $_POST["roomId"];
+		$roomId = $_POST["roomId"];
 		$hours = $_POST["hours"];
+		$earning = $_POST["earning"];
+
+		$result = attemptBookRoom($roomId, $hours, $earning);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
 	}
 	function checkoutRoom(){
-		$roomId= $_POST["roomId"];
-		$extrahours = $_POST["extrahours"];
+		$roomId = $_POST["roomId"];
+		$extraHours = $_POST["extraHours"];
+		$extraEarning = $_POST["extraEarning"];
+
+		$result = attemptCheckoutRoom($roomId, $extraHours, $extraEarning);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
 	}
 
 	function setRoomInRepair(){
-		$roomId= $_POST["roomId"];
+		$roomId = $_POST["roomId"];
 
+		$result = attemptSetRoomInRepair($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
 	}
 
 	function makeRoomAvailable(){
-		$roomId= $_POST["roomId"];
+		$roomId = $_POST["roomId"];
 
+		$result = attemptMakeRoomAvailable($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
 	}
 
 	function getUsers(){
+		$result = attemptGetUsers();
 
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
 	}
 
 	function deleteUser(){
 		$userId = $_POST["userId"];
-	}
 
-
-/*
-	function getUser(){
-		session_start();
-		$userId = $_SESSION['userId'];
-
-		$result = attemptGetUser($userId);
-
-		if ($result["status"] == 200){
-			echo json_encode($result["data"]);
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-
-	}
-
-	function postComment(){
-		session_start();
-		$content = $_POST["content"];
-		$userId = $_SESSION['userId'];
-
-		$result = attemptPost($content, $userId);
+		$result = attemptDeleteUser($userId);
 
 		if ($result["status"] == 200){
 			echo json_encode(array("result"=> "SUCCESS"));
@@ -250,90 +253,11 @@
 	}
 
 
-	function getComments(){
-		$result = attemptGetComments();
 
-		if ($result["status"] == 200){
-			echo json_encode($result["data"]);
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function getFriends(){
-		session_start();
-		$userId = $_SESSION['userId'];
-
-		$result = attemptGetFriends($userId);
-
-		if ($result["status"] == 200){
-			echo json_encode($result["data"]);
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function getRequests(){
-		session_start();
-		$userId = $_SESSION['userId'];
-
-		$result = attemptGetRequests($userId);
-
-		if ($result["status"] == 200){
-			echo json_encode($result["data"]);
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function requestFriendship(){
-		session_start();
-		$userId = $_SESSION['userId'];
-		$friendId = $_POST["friendId"];
-
-		$result = attemptRequestFriend($userId, $friendId);
-
-		if ($result["status"] == 200){
-			echo json_encode(array("result"=> "SUCCESS"));
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function acceptFriendship(){
-		session_start();
-		$userId = $_SESSION['userId'];
-		$friendId = $_POST["friendId"];
-
-		$result = attemptAcceptFriend($userId, $friendId);
-
-		if ($result["status"] == 200){
-			echo json_encode(array("result"=> "SUCCESS"));
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function rejectFriendship(){
-		session_start();
-		$userId = $_SESSION['userId'];
-		$friendId = $_POST["friendId"];
-
-		$result = attemptRejectFriend($userId, $friendId);
-
-		if ($result["status"] == 200){
-			echo json_encode(array("result"=> "SUCCESS"));
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function searchUser(){
-		session_start();
-		$userId = $_SESSION['userId'];
+	function searchRoom(){
 		$text = $_POST["text"];
 
-		$result = attemptSearchUser($userId, $text);
+		$result = attemptSearchRoom($text);
 
 		if ($result["status"] == 200){
 			echo json_encode($result["data"]);
@@ -341,7 +265,7 @@
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}
 	}
-*/
+
 
 	// ERROR HANDLER
 	function genericErrorFunction($status, $headerMsg, $dieMsg){

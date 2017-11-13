@@ -93,7 +93,6 @@
 
 		$sql = "SELECT *
 				FROM Rooms
-				
 				ORDER BY id ASC";
 
 		$result = $conn->query($sql);
@@ -105,7 +104,8 @@
 					"id"=>$row["id"],
 					"type"=>$row["type"],
 					"price"=>$row["price"],
-					"status"=>$row["status"]);
+					"status"=>$row["status"],
+					"endDate"=>$row["endDate"]);
 
 				array_push($rooms,$room);
 			}
@@ -120,259 +120,173 @@
 	}
 
 	function attemptGetAvailableRoom($roomId){
-
-	}
-
-	function attemptGetOccupiedRoom($roomId){
-
-	}
-
-	/*
-	function attemptGetUser($userId){
 		$conn = databaseConnection();
 		if ($conn == null){
 			return array("status"=> 500);
 		}
 
 		$sql = "SELECT *
-				FROM Users
-				WHERE id = '$userId'";
+				FROM Rooms
+				WHERE id = '$roomId'
+				ORDER BY id ASC";
 
 		$result = $conn->query($sql);
 
-		// Validate user
-		if($result->num_rows > 0){
+		if ($result->num_rows > 0){
 			$ans = $result->fetch_assoc();
 
-			$user = array(
-				"username"=>$ans["username"],
-				"email"=>$ans["email"],
-				"firstName"=>$ans["firstName"],
-				"lastName"=>$ans["lastName"],
-				"country"=>$ans["country"],
-				"gender"=>$ans["gender"]
+			if ($ans["status"] != 1){
+				$conn->close();
+				return array("status"=>402, "headerMsg"=>"Room not available", "dieMsg"=>"Please update rooms info");
+			}
+
+			$room = array(
+				"id"=>$ans["id"],
+				"type"=>$ans["type"],
+				"price"=>$ans["price"]
 			);
+			
 			$conn->close();
-			return array("data" => $user, "status"=>200);
-		}
-
-		$conn->close();
-		return array(
-			"status"=>401,
-			"headerMsg"=>"User not found.",
-			"dieMsg"=>"Wrong credentials provided"
-		);
-	}
-
-	function attemptPost($content, $userId){
-		$conn = databaseConnection();
-		if ($conn == null){
-			return array("status"=> 500);
-		}
-
-		$sql = "INSERT INTO Comments(content, userId)
-				VALUES ('$content', '$userId')";
-
-		$result = $conn->query($sql);
-
-		if ($result){
-			$conn->close();
-			return array("status"=>200);
-		}
-		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
-		$conn->close();
-		return array(
-			"status"=>401,
-			"headerMsg"=>"Insert error in DB.",
-			"dieMsg"=> $dieMsg
-		);
-	}
-
-	function attemptGetComments() {
-		$conn = databaseConnection();
-		if ($conn == null){
-			return array("status"=> 500);
-		}
-
-		$sql = "SELECT c.id, c.content, u.id, u.username, u.firstName, u.lastName
-				FROM Comments c, Users u
-				WHERE u.id = c.userId
-				ORDER BY c.id DESC";
-
-		$result = $conn->query($sql);
-
-		if ($result->num_rows > 0){
-			$comments = array();
-			while ($row = $result->fetch_assoc()){
-				$comment = array(
-					"content"=>$row["content"],
-					"username"=>$row["username"],
-					"firstName"=>$row["firstName"],
-					"lastName"=>$row["lastName"]);
-
-				array_push($comments,$comment);
-			}
-
-			$conn->close();
-			return array("data" => $comments, "status"=>200);
-		}
-
-
-		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
-		$conn->close();
-		return array("status"=>401, "headerMsg"=>"Insert error in Database.", "dieMsg"=>$dieMsg);
-
-	}
-
-	function attemptGetFriends($userId){
-		$conn = databaseConnection();
-		if ($conn == null){
-			return array("status"=> 500);
-		}
-
-		// TODO check sql statement
-		$sql = "SELECT u.id, u.username, u.email, u.firstName, u.lastName, u.country, u.gender
-				FROM Users u, Friendship f
-				WHERE ('$userId' = f.userId_1 AND u.id = f.userId_2) OR ('$userId' = f.userId_2 AND u.id = f.userId_1)";
-
-		$result = $conn->query($sql);
-
-		if ($result->num_rows > 0){
-			$friends = array();
-			while ($row = $result->fetch_assoc()){
-				$friend= array(
-					"id"=>$row["id"],
-					"username"=>$row["username"],
-					"email"=>$row["email"],
-					"firstName"=>$row["firstName"],
-					"lastName"=>$row["lastName"],
-					"country"=>$row["country"],
-					"gender"=>$row["gender"]);
-
-				array_push($friends,$friend);
-			}
-
-			$conn->close();
-			return array("data" => $friends, "status"=>200);
-		}
-
-		$conn->close();
-		return array("status"=>401, "headerMsg"=>"You don't have friends, try to add some", "dieMsg"=>"No friends");
-
-	}
-
-	function attemptGetRequests($userId){
-		$conn = databaseConnection();
-		if ($conn == null){
-			return array("status"=> 500);
-		}
-
-		// TODO check sql statement
-		$sql = "SELECT u.id, u.username, u.email, u.firstName, u.lastName, u.country, u.gender
-				FROM Users u, FriendRequest fr
-				WHERE '$userId' = fr.toUser AND u.id = fr.fromUser";
-
-		$result = $conn->query($sql);
-
-		if ($result->num_rows > 0){
-			$friends = array();
-			while ($row = $result->fetch_assoc()){
-				$friend= array(
-					"id"=>$row["id"],
-					"username"=>$row["username"],
-					"email"=>$row["email"],
-					"firstName"=>$row["firstName"],
-					"lastName"=>$row["lastName"],
-					"country"=>$row["country"],
-					"gender"=>$row["gender"]);
-
-				array_push($friends,$friend);
-			}
-
-			$conn->close();
-			return array("data" => $friends, "status"=>200);
-		}
-
-		$conn->close();
-		return array("status"=>401, "headerMsg"=>"You don't have friend requests", "dieMsg"=>"No friend requests");
-
-	}
-
-	function attemptRequestFriend($userId, $friendId){
-		$conn = databaseConnection();
-		if ($conn == null){
-			return array("status"=> 500);
-		}
-
-		$sql = "INSERT INTO FriendRequest(fromUser, toUser)
-				VALUES ('$userId', '$friendId')";
-
-		$result = $conn->query($sql);
-
-		if ($result){
-			$conn->close();
-			return array("status"=>200);
+			return array("data" => $room, "status"=>200);
 		}
 
 		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 		$conn->close();
-		return array(
-			"status"=>401,
-			"headerMsg"=>"Insert error in DB.",
-			"dieMsg"=> $dieMsg
-		);
+		return array("status"=>401, "headerMsg"=>"Error in database", "dieMsg"=>$dieMsg);
 	}
 
-	function attemptAcceptFriend($userId, $friendId){
+	function attemptGetOccupiedRoom($roomId){
 		$conn = databaseConnection();
 		if ($conn == null){
 			return array("status"=> 500);
 		}
 
-		$delete = "DELETE FROM FriendRequest
-				   WHERE fromUser = '$friendId' AND toUser = '$userId'";
+		$sql = "SELECT *
+				FROM Rooms
+				WHERE id = '$roomId'
+				ORDER BY id ASC";
 
 		$result = $conn->query($sql);
 
-		if (!$result){
-			$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
-			$conn->close();
-			return array(
-				"status"=>401,
-				"headerMsg"=>"Couldn't update FriendRequest on DB.",
-				"dieMsg"=> $dieMsg
+		if ($result->num_rows > 0){
+			$ans = $result->fetch_assoc();
+
+			if ($ans["status"] != 2){
+				$conn->close();
+				return array("status"=>402, "headerMsg"=>"Room not occupied", "dieMsg"=>"Please update rooms info");
+			}
+
+			$room = array(
+				"id"=>$ans["id"],
+				"type"=>$ans["type"],
+				"price"=>$ans["price"],
+				"endDate"=>$ans["endDate"]
 			);
+			
+			$conn->close();
+			return array("data" => $room, "status"=>200);
 		}
 
-		$insert = "INSERT INTO Friendship(userId_1, userId_2)
-				   VALUES ('$userId', '$friendId')";
+		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
+		$conn->close();
+		return array("status"=>401, "headerMsg"=>"Error in database", "dieMsg"=>$dieMsg);
 
-		$ans = $conn->query($insert);
+	}
 
-		if ($ans){
+	function attemptBookRoom($roomId, $hours, $earning){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		// Get current timestamp
+    	$now = new DateTime(); 
+		$startDate = $now->format('Y-m-d H:i:s');
+
+		$sql = "INSERT INTO BookingHistory(roomId, startDate, hoursBooked, earning)
+				VALUES ('$roomId', '$startDate', '$hours', $earning)";
+
+		$result = $conn->query($sql);
+
+		if ($result){
+			// Add hours to current timestamp
+			$now->add(new DateInterval("PT{$hours}H"));
+			$endDate = $now->format('Y-m-d H:i:s');
+
+			$update = "UPDATE Rooms 
+					   SET status = 2, endDate = '$endDate'
+					   WHERE id = '$roomId'";
+
+			$updateResult = $conn->query($update);
+
+			$conn->close();
+			return array("status"=>200);
+		}
+		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
+		$conn->close();
+		return array("status"=>401, "headerMsg"=>"Error in database", "dieMsg"=>$dieMsg);
+	}
+	function attemptCheckoutRoom($roomId, $extraHours, $extraEarning){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$sql = "SELECT *
+				FROM BookingHistory bh
+				WHERE bh.roomId = '$roomId'
+				ORDER BY startDate DESC 
+				LIMIT 1";
+
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0) {
+			$ans = $result->fetch_assoc();
+
+			// Get values
+			$bookingId = $ans["id"];
+			$startDate = DateTime::createFromFormat( "Y-m-d H:i:s", $ans["startDate"]);
+			$hoursBooked = $ans["hoursBooked"];
+			$earning = $ans["earning"];
+			// Set new values
+			$hoursBooked = $hoursBooked + $extraHours;
+			$earning = $earning + $extraEarning;
+			$startDate->add(new DateInterval("PT{$hoursBooked}H"));
+			$endDate = $startDate-->format('Y-m-d H:i:s');
+			
+			$updateBooking = "UPDATE BookingHistory
+							  SET hoursBooked = '$hoursBooked', endDate = '$endDate', earning = '$earning'
+							  WHERE id = '$bookingId'";
+
+			$bookingResult = $conn->query($updateBooking);
+
+
+			$updateRoom = "UPDATE Rooms 
+					   	   SET status = 3, endDate = NULL
+					       WHERE id = '$roomId'";
+
+			$updateResult = $conn->query($updateRoom);
+
 			$conn->close();
 			return array("status"=>200);
 		}
 
 		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
 		$conn->close();
-		return array(
-			"status"=>402,
-			"headerMsg"=>"Couldn't insert Friendship on DB.",
-			"dieMsg"=> $dieMsg
-		);
+		return array("status"=>401, "headerMsg"=>"Error in database", "dieMsg"=>$dieMsg);
 	}
 
-	function attemptRejectFriend($userId, $friendId){
+	function attemptSetRoomInRepair($roomId){
 		$conn = databaseConnection();
 		if ($conn == null){
 			return array("status"=> 500);
 		}
 
-		$delete = "DELETE FROM FriendRequest
-				   WHERE fromUser = '$friendId' AND toUser = '$userId'";
+		$updateRoom = "UPDATE Rooms 
+					   SET status = 4
+					   WHERE id = '$roomId'";
 
-		$result = $conn->query($sql);
+		$result = $conn->query($updateRoom);
 
 		if ($result){
 			$conn->close();
@@ -383,30 +297,46 @@
 		$conn->close();
 		return array(
 			"status"=>401,
-			"headerMsg"=>"Couldn't update FriendRequest on DB.",
+			"headerMsg"=>"Update error in DB.",
 			"dieMsg"=> $dieMsg
 		);
 	}
 
-	function attemptSearchUser($userId, $text){
+	function attemptMakeRoomAvailable($roomId){
 		$conn = databaseConnection();
 		if ($conn == null){
 			return array("status"=> 500);
 		}
 
-		$sql = "SELECT u.id, u.username, u.email, u.firstName, u.lastName
-				FROM Users u
-				WHERE (u.username LIKE '%$text%' OR u.email LIKE '%$text%')
-					AND NOT u.id = '$userId'
-					AND NOT EXISTS (
-						SELECT *
-						FROM Friendship f
-						WHERE (u.id = f.userId_1 AND '$userId' = f.userId_2)
-							OR (u.id = f.userId_2 AND '$userId' = f.userId_1))
-					AND NOT EXISTS (
-						SELECT *
-						FROM FriendRequest fr
-						WHERE fr.fromUser = '$userId' AND u.id = fr.toUser)";
+		$updateRoom = "UPDATE Rooms 
+					   SET status = 1
+					   WHERE id = '$roomId'";
+
+		$result = $conn->query($updateRoom);
+
+		if ($result){
+			$conn->close();
+			return array("status"=>200);
+		}
+
+		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
+		$conn->close();
+		return array(
+			"status"=>401,
+			"headerMsg"=>"Update error in DB.",
+			"dieMsg"=> $dieMsg
+		);
+
+	}
+
+	function attemptGetUsers(){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$sql = "SELECT *
+				FROM Users";
 
 		$result = $conn->query($sql);
 
@@ -418,8 +348,9 @@
 					"username"=>$row["username"],
 					"email"=>$row["email"],
 					"firstName"=>$row["firstName"],
-					"lastName"=>$row["lastName"]);
-
+					"lastName"=>$row["lastName"],
+					"admin"=>$row["admin"]
+				);
 				array_push($users,$user);
 			}
 
@@ -427,9 +358,68 @@
 			return array("data" => $users, "status"=>200);
 		}
 
+		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
+		$conn->close();
+		return array("status"=>401, "headerMsg"=>"Error in database", "dieMsg"=>$dieMsg);
+	}
+
+	function attemptDeleteUser($userId){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$delete = "DELETE FROM Users
+				   WHERE id = '$userId'";
+
+		$result = $conn->query($delete);
+
+		if ($result){
+			$conn->close();
+			return array("status"=>200);
+		}
+
+		$dieMsg = "Error: " . $sql . "\n" . mysql_error($conn);
+		$conn->close();
+		return array(
+			"status"=>401,
+			"headerMsg"=>"Couldn't delete user from DB.",
+			"dieMsg"=> $dieMsg
+		);
+		
+	}
+
+	function attemptSearchRoom($userId, $text){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$sql = "SELECT *
+				FROM Rooms
+				WHERE id LIKE '%$text%'";
+
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0){
+			$rooms = array();
+			while ($row = $result->fetch_assoc()){
+				$room = array(
+					"id"=>$row["id"],
+					"type"=>$row["type"],
+					"price"=>$row["price"],
+					"status"=>$row["status"],
+					"endDate"=>$row["endDate"]);
+
+				array_push($rooms,$room);
+			}
+
+			$conn->close();
+			return array("data" => $rooms, "status"=>200);
+		}
+
 		$conn->close();
 		return array("status"=>401, "headerMsg"=>"No users with that name or email", "dieMsg"=>"No users");
 	}
-	*/
 
 ?>
