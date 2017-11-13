@@ -1,37 +1,53 @@
-// Check active session
-$.ajax({
-	url: "./data/applicationLayer.php",
-	type: "POST",
-	data: {"action": "isLoggedIn"},
-	ContentType: "application/json",
-	dataType: "json",
-	success: function(data){
-		console.log(data);
-		if (data.session == 'FALSE') {
-			window.location.replace("index.html");
-		} 
-	},
-	error: function(error){
-		console.log(error.statusText);
-	}
-});
+
 
 $(document).ready(function(){
+	// Check active session
 	$.ajax({
 		url: "./data/applicationLayer.php",
 		type: "POST",
-		data: {"action": "isAdmin"},
+		data: {"action": "isLoggedIn"},
 		ContentType: "application/json",
 		dataType: "json",
 		success: function(data){
-			
+			console.log(data);
+			loadRooms();
+			if (data.admin == "TRUE") {
+				console.log("user is admin");
+				$(".leftMenu").show();
+			} else {
+				console.log("user is not admin");
+				$(".leftMenu").hide();
+			}
 		},
 		error: function(error){
-			
+			console.log(error.statusText);
+			window.location.replace("index.html");
 		}
 	});
 
 
+	// MARK: - Actions
+
+	$(".roomDiv").click(function (e){
+		var roomId = e.currentTarget.id.substring(4);
+		var roomType = e.currentTarget;
+		console.log(roomType);
+		showModalForRoom(roomId, e);
+	});
+
+});
+
+
+function showModal(title, message){
+	console.log("showing");
+	$("#modalTitle").text(title);
+	$("#modalMessage").text(message);
+	$("#myModal").show();
+	console.log("showed");
+}
+
+// MARK: - Present rooms functions
+function loadRooms(){
 	$.ajax({
 		url: "./data/applicationLayer.php",
 		type: "POST",
@@ -46,102 +62,7 @@ $(document).ready(function(){
 			console.log(error.statusText);
 		}
 	});
-
-
-
-	$(".roomDiv").click(function (e){
-		var roomId = e.currentTarget.id.substring(4);
-		var roomType = e.currentTarget;
-		console.log(roomType);
-		showModalForRoom(roomId, e);
-	});
-
-
-	// Load rooms
-	/*
-	
-	// Action when clicking the log in button
-	$("#postBtn").click(function(){
-		post();
-	});
-
-	$("#modalBtn").click(function (){
-		$("#myModal").hide();
-	});
-
-	$(window).click( function(event){
-    	if (event.target == $("#modal")) {
-        	$("#myModal").hide();
-    	}
-	})
-
-	$('#messageField').bind("enterKey",function(e){
-   		post();
-	});
-
-	$('#messageField').keyup(function(e){
-    	if(e.keyCode == 13){
-        	$(this).trigger("enterKey");
-    	}
-	});
-	*/
-});
-
-
-function post(){
-	var message = $("#messageField").val();
-		
-	if (message != "") {
-
-		var jsonToSend = {
-			"content": message,
-			"action": "postComment"
-		};
-
-		$.ajax({
-			url: "./data/applicationLayer.php",
-			type: "POST",
-			data: jsonToSend,
-			ContentType: "application/json",
-			dataType: "json",
-			success: function(data){
-				postComment(message);
-				$("#messageField").val("");
-			},
-			error: function(error){
-				console.log(error.statusText);
-				showModal("Database error","Please try again");
-			}
-		});
-		
-	} else {
-		showModal("Empty field","You need to write a message to be able to post");
-	}
 }
-
-function postComment(message) {
-	
-	var newHtml = '<div class="postDiv">'
-	newHtml += '<div class="user">'
-	newHtml += '<div class="name">' + actualName + '</div>';
-	newHtml += '<div class="username"> @' + actualUsername + '</div>';
-	newHtml += '</div>'
-	newHtml += '<div class="comment">' +  message + '</div>';
-	newHtml += '<div class="lineDivider"></div>'
-	newHtml += '</div>'
-
-	$("#postsSection").prepend(newHtml)
-}
-
-function showModal(title, message){
-	console.log("showing");
-	$("#modalTitle").text(title);
-	$("#modalMessage").text(message);
-	$("#myModal").show();
-	console.log("showed");
-}
-
-// MARK: - Present rooms functions
 
 function presentRooms(rooms){
 	for (var i=0; i < rooms.length; i++){
@@ -249,26 +170,22 @@ function showAvailableModal(roomId) {
 		ContentType: "application/json",
 		dataType: "json",
 		success: function(data){
-			// Open Available popup
+			var newHtml = modalHeader(roomId);
+   		 	newHtml += '<div class="modalBody">'
+    			newHtml += '<p id="modalMessage">Some text in the Modal Body</p>';
+        		newHtml += '<button id="modalBtn" class="roundedBtn" type="button" >OK</button>';
+    		newHtml += '</div>';
+    		$("#availableModal").html(newHtml);
+    		$("#availableModal").show();
 		},
 		error: function(error){
 			console.log(error.statusText);
 		}
 	});
-
-	var newHtml;
-	newHtml += '<div class="modalHeader">';
-        newHtml += '<div id="modalTitle" class="headerText">Room </div>';
-    newHtml += '</div>';
-    newHtml += '<div class="modalBody">'
-    	newHtml += '<p id="modalMessage">Some text in the Modal Body</p>';
-        newHtml += '<button id="modalBtn" class="roundedBtn" type="button" >OK</button>';
-    newHtml += '</div>';
 	
 }
 
 function showOccupiedModal(roomId) {
-	//funcion ajax
 	var jsonToSend = {
 		"roomId": roomId,
 		"action": "getOccupiedRoom"
@@ -281,7 +198,8 @@ function showOccupiedModal(roomId) {
 		ContentType: "application/json",
 		dataType: "json",
 		success: function(data){
-			// Open Occupied popup
+			console.log(data);
+			$("#occupiedModal").show();
 		},
 		error: function(error){
 			console.log(error.statusText);
@@ -291,19 +209,18 @@ function showOccupiedModal(roomId) {
 
 function showInServiceModal(roomId) {
 	//open In service popup
-
+	$("#inServiceModal").show();
 }
 
 function showInRepairModal(roomId) {
 	// open in repair popup
-
-
+	$("#inRepairModal").show();
 }
 
 function modalHeader(roomId) {
-	var newHtml;
-	newHtml += '<div class="modalHeader">';
-        newHtml += '<div id="modalTitle" class="headerText">Room </div>';
+	var newHtml = '<div class="modalHeader">';
+    newHtml += '<div class="headerText">Room ' + roomId + '</div>';
+    newHtml += '<span class="headerBtn"></div>';
     newHtml += '</div>';
 
     return newHtml;

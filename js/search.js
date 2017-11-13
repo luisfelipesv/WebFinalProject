@@ -1,24 +1,26 @@
-// Check active session
-/*
-$.ajax({
-	url: "./data/applicationLayer.php",
-	type: "POST",
-	data: {"action": "isLoggedIn"},
-	ContentType: "application/json",
-	dataType: "json",
-	success: function(data){
-		console.log(data);
-		if (data.session == 'FALSE') {
-			window.location.replace("index.html");
-		} 
-	},
-	error: function(error){
-		console.log(error.statusText);
-	}
-});
-*/
 
 $(document).ready(function(){
+	// Check admin
+	$.ajax({
+		url: "./data/applicationLayer.php",
+		type: "POST",
+		data: {"action": "isLoggedIn"},
+		ContentType: "application/json",
+		dataType: "json",
+		success: function(data){
+			console.log(data);
+			if (data.admin == "TRUE") {
+				console.log("user is admin");
+			} else {
+				window.location.replace("home.html");
+			}
+		},
+		error: function(error){
+			console.log(error.statusText);
+			window.location.replace("index.html");
+		}
+	});
+	
 	// MARK: - Actions
 
 	// Search functions

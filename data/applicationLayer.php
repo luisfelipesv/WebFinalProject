@@ -21,13 +21,9 @@
 		case "logOut":
 			logOut();
 			break;
-		case "isAdmin":
-			isAdmin();
-			break;
 		case "getRooms":
 			getRooms();
 			break;
-
 		case "getAvailableRoom":
 			getAvailableRoom();
 			break;
@@ -55,18 +51,28 @@
 		case "searchRoom":
 			searchRoom();
 			break;
-
+		case "getWeekSummary":
+			getWeekSummary();
+			break;
+		case "getMonthSummary":
+			getMonthSummary();
+			break;
+		case "getYearSummary":
+			getYearSummary();
+			break;
 	}
 
 	// Session logged
 	function isLoggedIn(){
 		session_start();
 		if($_SESSION['loggedIn'] == "TRUE"){
-      		$response = array("session" => 'TRUE');
-      		echo json_encode($response);
+			if($_SESSION['admin'] == "TRUE"){
+      			echo json_encode(array("session" => 'TRUE', "admin"=> "TRUE"));
+    		} else {
+    			echo json_encode(array("session" => 'TRUE', "admin"=> "FALSE"));
+    		}
     	}else{
-      		$response = array("session" => 'FALSE' );
-      		echo json_encode($response);
+      		genericErrorFunction(401, "User not logged in", "The user needs to log in");
     	}
 	}
 
@@ -135,15 +141,6 @@
    		setcookie("savedUsername", "", time() - 60 , "/"); //delete cookie
 
     	echo json_encode(array("success" => 'TRUE'));
-	}
-
-	function isAdmin() {
-		session_start();
-		if($_SESSION['admin'] == "TRUE"){
-      		echo json_encode(array("result"=> "SUCCESS"));
-    	}else{
-      		genericErrorFunction(401, "Isn't admin", "User is not admin");
-    	}
 	}
 
 	function getRooms(){
@@ -253,7 +250,6 @@
 	}
 
 
-
 	function searchRoom(){
 		$text = $_POST["text"];
 
@@ -266,6 +262,50 @@
 		}
 	}
 
+	function getWeekSummary() {
+		$result = attemptGetWeekSummary();
+
+		if ($result["status"] == 200){
+			echo json_encode(array(
+				"type1Earning" => $result["type1Earning"],
+				"type2Earning" => $result["type2Earning"],
+				"type3Earning" => $result["type3Earning"],
+				"totalEarning" => $result["totalEarning"]
+			));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getMonthSummary(){
+		$result = attemptGetMonthSummary();
+
+		if ($result["status"] == 200){
+			echo json_encode(array(
+				"type1Earning" => $result["type1Earning"],
+				"type2Earning" => $result["type2Earning"],
+				"type3Earning" => $result["type3Earning"],
+				"totalEarning" => $result["totalEarning"]
+			));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getYearSummary(){
+		$result = attemptGetYearSummary();
+
+		if ($result["status"] == 200){
+			echo json_encode(array(
+				"type1Earning" => $result["type1Earning"],
+				"type2Earning" => $result["type2Earning"],
+				"type3Earning" => $result["type3Earning"],
+				"totalEarning" => $result["totalEarning"]
+			));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
 
 	// ERROR HANDLER
 	function genericErrorFunction($status, $headerMsg, $dieMsg){

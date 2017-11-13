@@ -214,7 +214,7 @@
 			$endDate = $now->format('Y-m-d H:i:s');
 
 			$update = "UPDATE Rooms 
-					   SET status = 2, endDate = '$endDate'
+					   SET status = 2, startDate = '$starDate', endDate = '$endDate'
 					   WHERE id = '$roomId'";
 
 			$updateResult = $conn->query($update);
@@ -226,6 +226,7 @@
 		$conn->close();
 		return array("status"=>401, "headerMsg"=>"Error in database", "dieMsg"=>$dieMsg);
 	}
+
 	function attemptCheckoutRoom($roomId, $extraHours, $extraEarning){
 		$conn = databaseConnection();
 		if ($conn == null){
@@ -248,6 +249,7 @@
 			$startDate = DateTime::createFromFormat( "Y-m-d H:i:s", $ans["startDate"]);
 			$hoursBooked = $ans["hoursBooked"];
 			$earning = $ans["earning"];
+
 			// Set new values
 			$hoursBooked = $hoursBooked + $extraHours;
 			$earning = $earning + $extraEarning;
@@ -262,7 +264,7 @@
 
 
 			$updateRoom = "UPDATE Rooms 
-					   	   SET status = 3, endDate = NULL
+					   	   SET status = 3, ,startDate = '2000-01-01 01:01:01', endDate = '2000-01-01 01:01:01'
 					       WHERE id = '$roomId'";
 
 			$updateResult = $conn->query($updateRoom);
@@ -389,7 +391,7 @@
 		
 	}
 
-	function attemptSearchRoom($userId, $text){
+	function attemptSearchRoom($text){
 		$conn = databaseConnection();
 		if ($conn == null){
 			return array("status"=> 500);
@@ -420,6 +422,159 @@
 
 		$conn->close();
 		return array("status"=>401, "headerMsg"=>"No users with that name or email", "dieMsg"=>"No users");
+	}
+
+	function attemptGetWeekSummary(){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$type1Earning = 0;
+		$type2Earning = 0;
+		$type3Earning = 0;
+
+		$sql1 = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE WEEK(bh.startDate) = WEEK(CURRENT_DATE())
+					AND MONTH(bh.startDate) = MONTH(CURRENT_DATE())
+					AND YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 1";
+		$result1 = $conn->query($sql1);
+		$ans1 = $result1->fetch_assoc();
+		$type1Earning += $ans1["totalEarning"];
+
+		$sql2 = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE WEEK(bh.startDate) = WEEK(CURRENT_DATE())
+					AND MONTH(bh.startDate) = MONTH(CURRENT_DATE())
+					AND YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 2";
+		$result2 = $conn->query($sql2);
+		$ans2 = $result2->fetch_assoc();
+		$type2Earning += $ans2["totalEarning"];
+
+		$sql3 = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE WEEK(bh.startDate) = WEEK(CURRENT_DATE())
+					AND MONTH(bh.startDate) = MONTH(CURRENT_DATE())
+					AND YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 3";
+		$result3 = $conn->query($sql3);
+		$ans3 = $result3->fetch_assoc();
+		$type3Earning += $ans3["totalEarning"];
+
+		$totalEarning = $type1Earning + $type2Earning + $type3Earning;
+
+		$conn->close();
+		return array(
+			"type1Earning" => $type1Earning,
+			"type2Earning" => $type2Earning, 
+			"type3Earning" => $type3Earning, 
+			"totalEarning" => $totalEarning, 
+			"status"=>200);
+	}
+
+	function attemptGetMonthSummary(){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$type1Earning = 0;
+		$type2Earning = 0;
+		$type3Earning = 0;
+
+		$sql = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE MONTH(bh.startDate) = MONTH(CURRENT_DATE())
+					AND YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 1";
+		$result = $conn->query($sql);
+		$ans = $result->fetch_assoc();
+		$type1Earning += $ans["totalEarning"];
+
+		$sql = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE MONTH(bh.startDate) = MONTH(CURRENT_DATE())
+					AND YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 2";
+		$result = $conn->query($sql);
+		$ans = $result->fetch_assoc();
+		$type2Earning += $ans["totalEarning"];
+
+		$sql = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE MONTH(bh.startDate) = MONTH(CURRENT_DATE())
+					AND YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 3";
+		$result = $conn->query($sql);
+		$ans = $result->fetch_assoc();
+		$type3Earning += $ans["totalEarning"];
+
+		$totalEarning = $type1Earning + $type2Earning + $type3Earning;
+
+		$conn->close();
+		return array(
+			"type1Earning" => $type1Earning,
+			"type2Earning" => $type2Earning, 
+			"type3Earning" => $type3Earning, 
+			"totalEarning" => $totalEarning, 
+			"status"=>200);
+	}
+
+	function attemptGetYearSummary(){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$type1Earning = 0;
+		$type2Earning = 0;
+		$type3Earning = 0;
+
+		$sql = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 1";
+		$result = $conn->query($sql);
+		$ans = $result->fetch_assoc();
+		$type1Earning += $ans["totalEarning"];
+
+		$sql = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 2";
+		$result = $conn->query($sql);
+		$ans = $result->fetch_assoc();
+		$type2Earning += $ans["totalEarning"];
+
+		$sql = "SELECT SUM(bh.earning) AS totalEarning
+				FROM BookingHistory bh, Rooms r
+				WHERE YEAR(bh.startDate) = YEAR(CURRENT_DATE())
+					AND r.id = bh.roomId
+					AND r.type = 3";
+		$result = $conn->query($sql);
+		$ans = $result->fetch_assoc();
+		$type3Earning += $ans["totalEarning"];
+
+		$totalEarning = $type1Earning + $type2Earning + $type3Earning;
+
+		$conn->close();
+		return array(
+			"type1Earning" => $type1Earning,
+			"type2Earning" => $type2Earning, 
+			"type3Earning" => $type3Earning, 
+			"totalEarning" => $totalEarning, 
+			"status"=>200);
 	}
 
 ?>
