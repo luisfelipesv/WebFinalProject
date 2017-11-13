@@ -122,7 +122,7 @@ function presentOccupiedRoom(room) {
 	console.log(room);
 	var endDate = new (Function.prototype.bind.apply(Date, [null].concat(room.endDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
 	
-	var time = endDate.getHours() + ":" + endDate.getMinutes();
+	var time = endDate.toLocaleTimeString();;
    	var newHtml = '<div class="roomBottomInfo">';
     newHtml += '<img class="roomImg" src="assets/clock.svg" alt="clock">';
     newHtml += '<div class="roomHour">' + time  + '</div>';
@@ -195,13 +195,15 @@ function showAvailableModal(roomId) {
 		ContentType: "application/json",
 		dataType: "json",
 		success: function(data){
-			var newHtml = modalHeader(roomId);
+			var newHtml = '<div class="modalContent availableContentModal">';
+			newHtml += modalHeader(roomId);
    		 	newHtml += '<div class="modalBody">'
-    			newHtml += '<p class="modalMessage">Horas:</p>';
+    			newHtml += '<div class="modalMessage">Horas:</div>';
     			newHtml += '<input id="hoursTf" class="textField" type="text" placeholder="Horas..." onchange="updateBookingPrice()">';
-    			newHtml += '<p class="modalMessage">Costo:</p>';
-    			newHtml += '<p id="bookingPrice" class="modalMessage" cost="'+ data.price +'""> 0 </p>';
+    			newHtml += '<div class="modalMessage">Costo:</div>';
+    			newHtml += '<div id="bookingPrice" class="modalTitle" cost="'+ data.price +'""> 0 </div>';
         		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="bookRoom(' + roomId + ')">OK</button>';
+    		newHtml += '</div>';
     		newHtml += '</div>';
     		$("#availableModal").html(newHtml);
     		$("#availableModal").show();
@@ -233,15 +235,17 @@ function showOccupiedModal(roomId) {
     		var endDate = new (Function.prototype.bind.apply(Date, [null].concat(data.endDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
 			var endTime = endDate.toLocaleTimeString();
 
-    		var newHtml = modalHeader(roomId);
+			var newHtml = '<div class="modalContent occupiedContentModal">';
+    		newHtml += modalHeader(roomId);
    		 	newHtml += '<div class="modalBody">'
    		 		newHtml += '<p class="modalMessage">Entrada-Salida:</p>';
    		 		newHtml += '<p class="modalMessage">' + startTime + ' - '+ endTime +'</p>';
     			newHtml += '<p class="modalMessage">Horas:</p>';
     			newHtml += '<input id="extraHoursTf" class="textField" type="text" placeholder="Horas extras..." onchange="updateCheckoutPrice()">';
     			newHtml += '<p class="modalMessage">Costo:</p>';
-    			newHtml += '<p id="checkoutPrice" class="modalMessage" cost="'+ data.price +'""> 0 </p>';
+    			newHtml += '<p id="checkoutPrice" class="modalTitle" cost="'+ data.price +'""> 0 </p>';
         		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="checkoutRoom(' + roomId + ')">OK</button>';
+    		newHtml += '</div>';
     		newHtml += '</div>';
 			$("#occupiedModal").html(newHtml);
 			$("#occupiedModal").show();
@@ -253,21 +257,25 @@ function showOccupiedModal(roomId) {
 }
 
 function showInServiceModal(roomId) {
-	var newHtml = modalHeader(roomId);
+	var newHtml = '<div class="modalContent inServiceContentModal">';
+	newHtml += modalHeader(roomId);
 	newHtml += '<div class="modalBody">'
    		newHtml += '<p class="modalMessage">Cambiar estado del cuarto</p>';
-   		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="makeRoomAvailable(' + roomId + ')">PONER DISPONIBLE</button>';
-   		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="changeRoomToInRepair(' + roomId + ')">PONER EN REPARACION</button>';
+   		newHtml += '<button id="makeAvailableBtn" class="roundedBtn modalBtn" type="button" onclick="makeRoomAvailable(' + roomId + ')">PONER DISPONIBLE</button>';
+   		newHtml += '<button id="setRepairBtn" class="roundedBtn modalBtn" type="button" onclick="changeRoomToInRepair(' + roomId + ')">PONER EN REPARACION</button>';
+    newHtml += '</div>';
     newHtml += '</div>';
 	$("#inServiceModal").html(newHtml);
 	$("#inServiceModal").show();
 }
 
 function showInRepairModal(roomId) {
-	var newHtml = modalHeader(roomId);
+	var newHtml = '<div class="modalContent inRepairContentModal">';
+	newHtml += modalHeader(roomId);
 	newHtml += '<div class="modalBody">'
    		newHtml += '<p class="modalMessage">Cambiar cuarto a disponible</p>';
    		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="makeRoomAvailable(' + roomId + ')">PONER DISPONIBLE</button>';
+    newHtml += '</div>';
     newHtml += '</div>';
 	$("#inRepairModal").html(newHtml);
 	$("#inRepairModal").show();
@@ -276,7 +284,7 @@ function showInRepairModal(roomId) {
 function modalHeader(roomId) {
 	var newHtml = '<div class="modalHeader">';
     newHtml += '<div class="headerText">Cuarto ' + roomId + '</div>';
-    newHtml += '<span class="headerBtn"><button class="closeModalBtn" type="button" onclick="hideModals()" >X</button></div>';
+    newHtml += '<button class="closeModalBtn" type="button" onclick="hideModals()" >x</button>';
     newHtml += '</div>';
 
     return newHtml;

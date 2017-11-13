@@ -1,6 +1,23 @@
+.timeline {
+  background-color: #F7F7F7;
+  width: 660px;
+  height: 100vh;
+  display: block;
+  margin-top: 82px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
 .report{
   font-weight: bold;
   font-size: 14px;
-  color: black;
+  color: white;
   display: inline-block;
+  background-color: grey;
+  width: 200px;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }

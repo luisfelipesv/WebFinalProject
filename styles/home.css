@@ -82,23 +82,46 @@
 
 
 /* Available Modal */
-#availableModal {
-
+.modalContent.availableContentModal {
+    width: 300px;
+    height: 300px;
 }
 
 /* Occupied Modal */
-#occupiedModal {
-
+.modalContent.occupiedContentModal {
+  width: 500px;
+  height: 350px;
 }
 
 /* In Service Modal */
-#inServiceModal {
-
+.modalContent.inServiceContentModal {
+  width: 300px;
+  height: 200px;
 }
 
 /* In repair modal */
-#inRepairModal {
-  
+.modalContent.inRepairContentModal {
+  width: 300px;
+  height: 150px;
+}
+
+
+#hoursTf{
+  width: 100px;
+}
+
+#extraHoursTf {
+  width: 200px;
+}
+
+#makeAvailableBtn {
+  display: block;
+  margin: 10px auto 10px auto;
+}
+
+#setRepairBtn {
+  display: block;
+  margin: 10px auto 10px auto;
 }
 
 

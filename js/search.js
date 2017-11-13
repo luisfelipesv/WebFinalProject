@@ -193,14 +193,16 @@ function showModalForRoom(roomId) {
 		dataType: "json",
 		success: function(data){
 			console.log(data);
-			var newHtml = '<div class="modalHeader">';
+			var newHtml = '<div class="modalContent historyModalContent">';
+			newHtml += '<div class="modalHeader">';
     		newHtml += '<div class="headerText">Historial Cuarto ' + roomId + '</div>';
-    		newHtml += '<span class="headerBtn"><button class="closeModalBtn" type="button" onclick="hideModals()" >X</button></div>';
+    		newHtml += '<button class="closeModalBtn" type="button" onclick="hideModals()" >x</button>';
     		newHtml += '</div>';
    			newHtml += '<div class="modalBody">'
    			for (var i=0; i < data.length; i++){
 				newHtml += presentHistory(data[i]);
 			}
+    		newHtml += '</div>';
     		newHtml += '</div>';
     		$("#historyModal").html(newHtml);
    			$("#historyModal").show();
@@ -227,7 +229,11 @@ function presentHistory(room){
 	var endTime = endDate.toLocaleDateString()  + " " + endDate.toLocaleTimeString();
 
 	var newHtml = '<div class="history">';
-	newHtml += 'Cuarto reservado de ' + startTime + ' a ' + endTime + ' por: $' + room.earning;
+	newHtml += '<div class="modalTitle">Reservacion #' + room.id + '</div>'
+	newHtml += '<div class="modalMessage">Ganancias: $' + room.earning + '</div>'
+	newHtml += '<div class="modalMessage">' + startTime + ' -- ' + endTime +'</div>'
+	//newHtml += '<div class="historyId">A: ' + endTime + '</div>'
+	
 	newHtml += '</div>';
 	return newHtml;
 }

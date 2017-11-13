@@ -602,6 +602,7 @@
 			$histories = array();
 			while ($row = $result->fetch_assoc()){
 				$history = array(
+					"id"=>$row["id"],
 					"roomId"=>$row["roomId"],
 					"startDate"=>$row["startDate"],
 					"endDate"=>$row["endDate"],

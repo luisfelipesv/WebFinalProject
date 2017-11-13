@@ -108,6 +108,17 @@
   cursor:pointer;
 }
 
+.modalContent.historyModalContent {
+  width: 500px;
+  height: 400px;
+}
 
+.modalMessage {
+  display: inline-block;
+  margin: 5px 16px 0px 0px;
+}
 
-
+.modalTitle{
+  display: inline-block;
+  margin: 5px 16px 0px 0px;
+}

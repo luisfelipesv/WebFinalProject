@@ -108,9 +108,9 @@ function presentUsers(users) {
 function presentUser(user) {
   console.log(user);
     var newHtml = '<div class="userDiv">';
-    newHtml += '<p> ID: ' + user.id + '</p>';
-    newHtml += '<p> Username: ' + user.username + '</p>';
-    newHtml += '<p> Password: ' + user.password + '</p>';
+    newHtml += '<div> ID: ' + user.id + '</div>';
+    newHtml += '<div> Username: ' + user.username + '</div>';
+    newHtml += '<div> Password: ' + user.password + '</div>';
     newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="deleteUser(' + user.id + ')">DELETE</button>';
     newHtml += '</div>';
     $(".usersSection").append(newHtml);

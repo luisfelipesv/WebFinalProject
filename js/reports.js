@@ -118,44 +118,34 @@ function loadYearReport() {
 }
 
 function presentWeekReport(report) {
-	console.log("Week Report");
-	console.log(report.type1Earning);
-	console.log(report.type2Earning);
-	console.log(report.type3Earning);
-	console.log(report.total);
 	var newHtml = '<div class = "report"> ';
-	newHtml += '<p> Reporte Semanal </p>';
-	newHtml += '<p> Tipo 1: ' + report.type1Earning + '</p>';
-	newHtml += '<p> Tipo 2: ' + report.type2Earning + '</p>';
-	newHtml += '<p> Tipo 3: ' + report.type3Earning + '</p>';
+	newHtml += '<div> Reporte Semanal </div>';
+	newHtml += '<div> Tipo 1: $' + report.type1Earning + '</div>';
+	newHtml += '<div> Tipo 2: $' + report.type2Earning + '</div>';
+	newHtml += '<div> Tipo 3: $' + report.type3Earning + '</div>';
+	newHtml += '<div> Total: $' + report.totalEarning + '</div>';
 	newHtml += '</div>';
 	$(".timeline").append(newHtml);
 }
 
 function presentMonthReport(report) {
-	console.log(report.type1Earning);
-	console.log(report.type2Earning);
-	console.log(report.type3Earning);
-	console.log(report.total);
 	var newHtml = '<div class = "report"> ';
-	newHtml += '<p> Reporte Mensual  </p>';
-	newHtml += '<p> Tipo 1: ' + report.type1Earning + '</p>';
-	newHtml += '<p> Tipo 2: ' + report.type2Earning + '</p>';
-	newHtml += '<p> Tipo 3: ' + report.type3Earning + '</p>';
+	newHtml += '<div> Reporte Mensual  </div>';
+	newHtml += '<div> Tipo 1: $' + report.type1Earning + '</div>';
+	newHtml += '<div> Tipo 2: $' + report.type2Earning + '</div>';
+	newHtml += '<div> Tipo 3: $' + report.type3Earning + '</div>';
+	newHtml += '<div> Total: $' + report.totalEarning + '</div>';
 	newHtml += '</div>';
 	$(".timeline").append(newHtml);
 }
 
 function presentYearReport(report) {
-	console.log(report.type1Earning);
-	console.log(report.type2Earning);
-	console.log(report.type3Earning);
-	console.log(report.total);
 	var newHtml = '<div class = "report"> ';
-	newHtml += '<p> Reporte Anual  </p>';
-	newHtml += '<p> Tipo 1: ' + report.type1Earning + '</p>';
-	newHtml += '<p> Tipo 2: ' + report.type2Earning + '</p>';
-	newHtml += '<p> Tipo 3: ' + report.type3Earning + '</p>';
+	newHtml += '<div> Reporte Anual  </div>';
+	newHtml += '<div> Tipo 1: $' + report.type1Earning + '</div>';
+	newHtml += '<div> Tipo 2: $' + report.type2Earning + '</div>';
+	newHtml += '<div> Tipo 3: $' + report.type3Earning + '</div>';
+	newHtml += '<div> Total: $' + report.totalEarning + '</div>';
 	newHtml += '</div>';
 	$(".timeline").append(newHtml);
 }

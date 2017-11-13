@@ -148,7 +148,7 @@ a.active{
 /* Rounded button */
 .roundedBtn {
   height: 35px;
-  margin: auto 16px auto 0px;
+  margin: auto 0px auto 0px;
   padding: 0px 15px;
   background-color: #50E3C2;
   border-radius: 17.5px;
@@ -211,10 +211,39 @@ a.active{
   font-weight: 500;
 }
 
+.modalMessage {
+  font-size: 14px;
+  height: 28px;
+  padding: 0px;
+  margin: 10px 10px;
+  text-align: center;
+  color: #4A4A4A;
+  font-weight: 500;
+}
+
+.modalTitle{
+  font-size: 20px;
+  height: 28px;
+  padding: 0px;
+  margin: 10px 10px;
+  text-align: center;
+  color: #4A4A4A;
+  font-weight: 500;
+}
+
 #modalBtn {
   margin: 0px auto 16px auto;
 }
 
+.closeModalBtn {
+  font-size: 20px;
+  display: inline-block;
+  float: right;
+  color: white;
+  border: 0px;
+  background-color: transparent;
+  font-weight: 600;
+}
 
 /* Modal Content */
 .modalContent {
