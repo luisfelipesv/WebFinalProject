@@ -1,4 +1,24 @@
 $(document).ready(function(){
+  // Check admin
+    $.ajax({
+        url: "./data/applicationLayer.php",
+        type: "POST",
+        data: {"action": "isLoggedIn"},
+        ContentType: "application/json",
+        dataType: "json",
+        success: function(data){
+            console.log(data);
+            if (data.admin == "TRUE") {
+                console.log("user is admin");
+            } else {
+                window.location.replace("home.html");
+            }
+        },
+        error: function(error){
+            console.log(error.statusText);
+            window.location.replace("index.html");
+        }
+    });
 
 
   // Action when clicking the sign up button
@@ -55,6 +75,27 @@ $(document).ready(function(){
     return false;
   });
 });
+
+
+function loadUsers() {
+    $.ajax({
+        url: "./data/applicationLayer.php",
+        type: "POST",
+        data: {"action": "getUsers"},
+        ContentType: "application/json",
+        dataType: "json",
+        success: function(data){
+            presentUsers(data);
+        },
+        error: function(error){
+            window.location.replace("home.html");
+        }
+    });
+}
+
+function presentUsers(users) {
+
+}
 
 
 // Generic function to validate an input of type text/password 

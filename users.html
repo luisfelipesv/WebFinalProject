@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    Hotel Sweet - Users
+  </title>
+  <link rel="stylesheet" type="text/css" href="styles/hotelSweet.css">
+  <link rel="stylesheet" type="text/css" href="styles/users.css">
+</head>
+
+<body>
+
+  <div class="globalNav">
+    <div class="container">
+
+      <div id="" class="leftMenu">
+        <ul>
+          <li><a class="navMenuItem" href="home.html">Inicio</a></li>
+          <li class="active"><a class="navMenuItem  active" href="users.html">Usuarios</a></li>
+          <li><a class="navMenuItem" href="reports.html">Reportes</a></li>
+          <li><a class="navMenuItem" href="search.html">Historial</a></li>
+        </ul>
+      </div>
+
+      <div class="rightMenu">
+        <a href="profile.html">
+          <img id="profileBtn" src="assets/profile.svg" alt="avi">
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page">
+
+    <form id="signUpForm">
+        <p> Nombre </br>
+          <input id="firstName" class= "formElement" type="text">
+          <span id="errorFirstName" class="error">*Porfavor ingresa una nombre</span>
+        </p>
+        <p> Apellido </br>
+          <input id="lastName" class= "formElement" type="text">
+          <span id="errorLastName" class="error">*Porfavor ingresa un apellido</span>
+        </p>
+        <p> Usuario </br>
+          <input id="username" class= "formElement" type="text">
+          <span id="errorUsername" class="error">*Porfavor ingresa una usuario</span>
+        </p>
+        <p> Correo </br>
+          <input id="email" class= "formElement" type="text">
+          <span id="errorEmail" class="error">*Porfavor ingresa un correo</span>
+        </p>
+        <p> Contraseña </br>
+          <input id="password" class= "formElement" type="password">
+          <span id="errorPassword" class="error">*Porfavor ingresa una contraseña</span>
+        </p>
+        <p> Confirmar contraseña </br>
+          <input id="passwordConfirmation" class= "formElement" type="password">
+          <span id="errorPasswordConfirmation" class="error">*Porfavor ingresa una contraseña</span>
+          <span id="errorSamePassword" class="error">*Las contraseñas son distintas</span>
+        </p>
+        <p> Puesto </br>
+          <input id="male" type="radio" name="job" value="Masculine" checked> Administrador </br>
+          <input id="female" type="radio" name="job" value="Feminine"> Empleado </br>
+          <span id="errorJob" class="error">*Porfavor selecciona un puesto</span>
+        </p>
+        <input id="signUpBtn" type="submit" value="Registrar cuenta" form="signUpForm">
+        <span id="errorSignUp" class="error">*El usuario ya existe, favor de usar otro</span>
+    </form>
+    <div class="usersSection">
+    </div>
+  </div>
+
+  <!-- POPUPS -->
+
+  <div id="availableModal" class="modal">
+    <!-- Modal content -->
+    <div class="modalContent">
+      <div class="modalHeader">
+        <div id="modalTitle" class="headerText">Modal Header</div>
+        <!-- <span id="closeModal" class="close">&times;</span>  -->
+     </div>
+     <div class="modalBody">
+      <p id="modalMessage">Some text in the Modal Body</p>
+      <button id="modalBtn" class="roundedBtn" type="button" >OK</button>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/users.js"></script>
+</body>
+</html>

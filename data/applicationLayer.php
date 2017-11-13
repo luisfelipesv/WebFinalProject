@@ -21,33 +21,44 @@
 		case "logOut":
 			logOut();
 			break;
-		case "getUser":
-			getUser();
+		case "getRooms":
+			getRooms();
 			break;
-		case "postComment":
-			postComment();
+		case "getAvailableRoom":
+			getAvailableRoom();
 			break;
-		case "getComments":
-			getComments();
+		case "getOccupiedRoom":
+			getOccupiedRoom();
 			break;
-
-		case "getFriends":
-			getFriends();
+		case "bookRoom":
+			bookRoom();
 			break;
-		case "getRequests":
-			getRequests();
+		case "checkoutRoom":
+			checkoutRoom();
 			break;
-		case "requestFriendship":
-			requestFriendship();
+		case "repairRoom":
+			setRoomInRepair();
 			break;
-		case "acceptFriendship":
-			acceptFriendship();
+		case "availableRoom":
+			makeRoomAvailable();
 			break;
-		case "rejectFriendship":
-			rejectFriendship();
+		case "getUsers":
+			getUsers();
 			break;
-		case "searchUser":
-			searchUser();
+		case "deleteUser":
+			deleteUser();
+			break;
+		case "searchRoom":
+			searchRoom();
+			break;
+		case "getWeekSummary":
+			getWeekSummary();
+			break;
+		case "getMonthSummary":
+			getMonthSummary();
+			break;
+		case "getYearSummary":
+			getYearSummary();
 			break;
 	}
 
@@ -55,11 +66,13 @@
 	function isLoggedIn(){
 		session_start();
 		if($_SESSION['loggedIn'] == "TRUE"){
-      		$response = array("session" => 'TRUE');
-      		echo json_encode($response);
+			if($_SESSION['admin'] == "TRUE"){
+      			echo json_encode(array("session" => 'TRUE', "admin"=> "TRUE"));
+    		} else {
+    			echo json_encode(array("session" => 'TRUE', "admin"=> "FALSE"));
+    		}
     	}else{
-      		$response = array("session" => 'FALSE' );
-      		echo json_encode($response);
+      		genericErrorFunction(401, "User not logged in", "The user needs to log in");
     	}
 	}
 
@@ -107,8 +120,13 @@
 			if ($saveUsername == "true") {
 				setcookie("savedUsername", $username, time() + 2592000, "/"); // 2592000 is equivalent to 30 days
 			}
+			if ($result["admin"] == 1) {
+				$_SESSION['admin'] = "TRUE";
+			} else {
+				$_SESSION['admin'] = "FALSE";
+			}
 
-			echo json_encode(array("result"=> "SUCCESS", "admin"=>$result["admin"]));
+			echo json_encode(array("result"=> "SUCCESS"));
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}
@@ -119,31 +137,110 @@
 
     	$_SESSION['loggedIn'] = 'FALSE';
     	$_SESSION['userId'] = -1;
+    	$_SESSION['admin'] = '';
    		setcookie("savedUsername", "", time() - 60 , "/"); //delete cookie
 
     	echo json_encode(array("success" => 'TRUE'));
 	}
 
-	function getUser(){
-		session_start();
-		$userId = $_SESSION['userId'];
-
-		$result = attemptGetUser($userId);
+	function getRooms(){
+		$result = attemptGetRooms();
 
 		if ($result["status"] == 200){
 			echo json_encode($result["data"]);
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}
-
 	}
 
-	function postComment(){
-		session_start();
-		$content = $_POST["content"];
-		$userId = $_SESSION['userId'];
+	function getAvailableRoom(){
+		$roomId = $_POST["roomId"];
 
-		$result = attemptPost($content, $userId);
+		$result = attemptGetAvailableRoom($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getOccupiedRoom(){
+		$roomId = $_POST["roomId"];
+
+		$result = attemptGetOccupiedRoom($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+	function bookRoom(){
+		$roomId = $_POST["roomId"];
+		$hours = $_POST["hours"];
+		$earning = $_POST["earning"];
+
+		$result = attemptBookRoom($roomId, $hours, $earning);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+	function checkoutRoom(){
+		$roomId = $_POST["roomId"];
+		$extraHours = $_POST["extraHours"];
+		$extraEarning = $_POST["extraEarning"];
+
+		$result = attemptCheckoutRoom($roomId, $extraHours, $extraEarning);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function setRoomInRepair(){
+		$roomId = $_POST["roomId"];
+
+		$result = attemptSetRoomInRepair($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function makeRoomAvailable(){
+		$roomId = $_POST["roomId"];
+
+		$result = attemptMakeRoomAvailable($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode(array("result"=> "SUCCESS"));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getUsers(){
+		$result = attemptGetUsers();
+
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function deleteUser(){
+		$userId = $_POST["userId"];
+
+		$result = attemptDeleteUser($userId);
 
 		if ($result["status"] == 200){
 			echo json_encode(array("result"=> "SUCCESS"));
@@ -153,90 +250,10 @@
 	}
 
 
-	function getComments(){
-		$result = attemptGetComments();
-
-		if ($result["status"] == 200){
-			echo json_encode($result["data"]);
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function getFriends(){
-		session_start();
-		$userId = $_SESSION['userId'];
-
-		$result = attemptGetFriends($userId);
-
-		if ($result["status"] == 200){
-			echo json_encode($result["data"]);
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function getRequests(){
-		session_start();
-		$userId = $_SESSION['userId'];
-
-		$result = attemptGetRequests($userId);
-
-		if ($result["status"] == 200){
-			echo json_encode($result["data"]);
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function requestFriendship(){
-		session_start();
-		$userId = $_SESSION['userId'];
-		$friendId = $_POST["friendId"];
-
-		$result = attemptRequestFriend($userId, $friendId);
-
-		if ($result["status"] == 200){
-			echo json_encode(array("result"=> "SUCCESS"));
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function acceptFriendship(){
-		session_start();
-		$userId = $_SESSION['userId'];
-		$friendId = $_POST["friendId"];
-
-		$result = attemptAcceptFriend($userId, $friendId);
-
-		if ($result["status"] == 200){
-			echo json_encode(array("result"=> "SUCCESS"));
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function rejectFriendship(){
-		session_start();
-		$userId = $_SESSION['userId'];
-		$friendId = $_POST["friendId"];
-
-		$result = attemptRejectFriend($userId, $friendId);
-
-		if ($result["status"] == 200){
-			echo json_encode(array("result"=> "SUCCESS"));
-		} else {
-			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
-		}
-	}
-
-	function searchUser(){
-		session_start();
-		$userId = $_SESSION['userId'];
+	function searchRoom(){
 		$text = $_POST["text"];
 
-		$result = attemptSearchUser($userId, $text);
+		$result = attemptSearchRoom($text);
 
 		if ($result["status"] == 200){
 			echo json_encode($result["data"]);
@@ -245,6 +262,50 @@
 		}
 	}
 
+	function getWeekSummary() {
+		$result = attemptGetWeekSummary();
+
+		if ($result["status"] == 200){
+			echo json_encode(array(
+				"type1Earning" => $result["type1Earning"],
+				"type2Earning" => $result["type2Earning"],
+				"type3Earning" => $result["type3Earning"],
+				"totalEarning" => $result["totalEarning"]
+			));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getMonthSummary(){
+		$result = attemptGetMonthSummary();
+
+		if ($result["status"] == 200){
+			echo json_encode(array(
+				"type1Earning" => $result["type1Earning"],
+				"type2Earning" => $result["type2Earning"],
+				"type3Earning" => $result["type3Earning"],
+				"totalEarning" => $result["totalEarning"]
+			));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getYearSummary(){
+		$result = attemptGetYearSummary();
+
+		if ($result["status"] == 200){
+			echo json_encode(array(
+				"type1Earning" => $result["type1Earning"],
+				"type2Earning" => $result["type2Earning"],
+				"type3Earning" => $result["type3Earning"],
+				"totalEarning" => $result["totalEarning"]
+			));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
 
 	// ERROR HANDLER
 	function genericErrorFunction($status, $headerMsg, $dieMsg){

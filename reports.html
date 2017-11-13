@@ -2,11 +2,13 @@
 <html>
 <head>
   <title>
-    Hotel Sweet - Historial
+    Hotel Sweet - Reportes
   </title>
+  <link rel="stylesheet" type="text/css" href="styles/reports.css">
   <link rel="stylesheet" type="text/css" href="styles/hotelSweet.css">
-  <link rel="stylesheet" type="text/css" href="styles/search.css">
-</head> 
+
+
+</head>
 
 
 
@@ -19,9 +21,9 @@
         <ul>
           <li><a class="navMenuItem" href="home.html">Inicio</a></li>
           <li><a class="navMenuItem" href="users.html">Usuarios</a></li>
-          <li><a class="navMenuItem" href="reports.html">Reportes</a></li>
-          <li class="active"><a class="navMenuItem active" href="search.html">Historial</a></li>
-        </ul>   
+          <li class="active"><a class="navMenuItem active" href="reports.html">Reportes</a></li>
+          <li><a class="navMenuItem" href="search.html">Historial</a></li>
+        </ul>
       </div>
 
       <div class="rightMenu">
@@ -29,18 +31,12 @@
           <img id="profileBtn" src="assets/profile.svg" alt="avi">
         </a>
       </div>
-      
+
     </div>
   </div>
 
   <div class="timeline">
-    <div class="searchFieldSection">
-      <input id="searchField" class="textField" type="text" placeholder="Busca por numero de cuarto...">
-      <button id="searchBtn" class="roundedBtn" type="button" >SEARCH</button> 
-    </div>
-    <div id="roomsSection">
 
-    </div>
   </div>
 
   <!-- The Modal -->
@@ -53,12 +49,12 @@
      </div>
      <div class="modalBody">
       <p id="modalMessage">Some text in the Modal Body</p>
-      <button id="modalBtn" class="roundedBtn" type="button" >OK</button> 
+      <button id="modalBtn" class="roundedBtn" type="button" >OK</button>
     </div>
   </div>
 
 
   <script type="text/javascript" src="js/jquery.js"></script>
-  <script type="text/javascript" src="js/search.js"></script>
+  <script type="text/javascript" src="js/reports.js"></script>
 </body>
 </html>
