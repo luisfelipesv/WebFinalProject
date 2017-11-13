@@ -72,7 +72,7 @@
 			$ans = $result->fetch_assoc();
 			$conn->close();
 			return array(
-				"userId"=> $ans["person_id"], 
+				"userId"=> $ans["person_id"],
 				"admin"=> $ans["admin"],
 				"status"=> 200);
 		}
@@ -145,7 +145,7 @@
 				"type"=>$ans["type"],
 				"price"=>$ans["price"]
 			);
-			
+
 			$conn->close();
 			return array("data" => $room, "status"=>200);
 		}
@@ -182,7 +182,7 @@
 				"price"=>$ans["price"],
 				"endDate"=>$ans["endDate"]
 			);
-			
+
 			$conn->close();
 			return array("data" => $room, "status"=>200);
 		}
@@ -200,7 +200,7 @@
 		}
 
 		// Get current timestamp
-    	$now = new DateTime(); 
+    	$now = new DateTime();
 		$startDate = $now->format('Y-m-d H:i:s');
 
 		$sql = "INSERT INTO BookingHistory(roomId, startDate, hoursBooked, earning)
@@ -213,7 +213,7 @@
 			$now->add(new DateInterval("PT{$hours}H"));
 			$endDate = $now->format('Y-m-d H:i:s');
 
-			$update = "UPDATE Rooms 
+			$update = "UPDATE Rooms
 					   SET status = 2, startDate = '$starDate', endDate = '$endDate'
 					   WHERE id = '$roomId'";
 
@@ -236,7 +236,7 @@
 		$sql = "SELECT *
 				FROM BookingHistory bh
 				WHERE bh.roomId = '$roomId'
-				ORDER BY startDate DESC 
+				ORDER BY startDate DESC
 				LIMIT 1";
 
 		$result = $conn->query($sql);
@@ -255,7 +255,7 @@
 			$earning = $earning + $extraEarning;
 			$startDate->add(new DateInterval("PT{$hoursBooked}H"));
 			$endDate = $startDate-->format('Y-m-d H:i:s');
-			
+
 			$updateBooking = "UPDATE BookingHistory
 							  SET hoursBooked = '$hoursBooked', endDate = '$endDate', earning = '$earning'
 							  WHERE id = '$bookingId'";
@@ -263,7 +263,7 @@
 			$bookingResult = $conn->query($updateBooking);
 
 
-			$updateRoom = "UPDATE Rooms 
+			$updateRoom = "UPDATE Rooms
 					   	   SET status = 3, ,startDate = '2000-01-01 01:01:01', endDate = '2000-01-01 01:01:01'
 					       WHERE id = '$roomId'";
 
@@ -284,7 +284,7 @@
 			return array("status"=> 500);
 		}
 
-		$updateRoom = "UPDATE Rooms 
+		$updateRoom = "UPDATE Rooms
 					   SET status = 4
 					   WHERE id = '$roomId'";
 
@@ -310,7 +310,7 @@
 			return array("status"=> 500);
 		}
 
-		$updateRoom = "UPDATE Rooms 
+		$updateRoom = "UPDATE Rooms
 					   SET status = 1
 					   WHERE id = '$roomId'";
 
@@ -351,7 +351,8 @@
 					"email"=>$row["email"],
 					"firstName"=>$row["firstName"],
 					"lastName"=>$row["lastName"],
-					"admin"=>$row["admin"]
+					"admin"=>$row["admin"],
+					"password"=>$row["userPassword"]
 				);
 				array_push($users,$user);
 			}
@@ -388,7 +389,7 @@
 			"headerMsg"=>"Couldn't delete user from DB.",
 			"dieMsg"=> $dieMsg
 		);
-		
+
 	}
 
 	function attemptSearchRoom($text){
@@ -472,9 +473,9 @@
 		$conn->close();
 		return array(
 			"type1Earning" => $type1Earning,
-			"type2Earning" => $type2Earning, 
-			"type3Earning" => $type3Earning, 
-			"totalEarning" => $totalEarning, 
+			"type2Earning" => $type2Earning,
+			"type3Earning" => $type3Earning,
+			"totalEarning" => $totalEarning,
 			"status"=>200);
 	}
 
@@ -523,9 +524,9 @@
 		$conn->close();
 		return array(
 			"type1Earning" => $type1Earning,
-			"type2Earning" => $type2Earning, 
-			"type3Earning" => $type3Earning, 
-			"totalEarning" => $totalEarning, 
+			"type2Earning" => $type2Earning,
+			"type3Earning" => $type3Earning,
+			"totalEarning" => $totalEarning,
 			"status"=>200);
 	}
 
@@ -571,9 +572,9 @@
 		$conn->close();
 		return array(
 			"type1Earning" => $type1Earning,
-			"type2Earning" => $type2Earning, 
-			"type3Earning" => $type3Earning, 
-			"totalEarning" => $totalEarning, 
+			"type2Earning" => $type2Earning,
+			"type3Earning" => $type3Earning,
+			"totalEarning" => $totalEarning,
 			"status"=>200);
 	}
 

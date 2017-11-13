@@ -10,7 +10,7 @@ $(document).ready(function(){
             console.log(data);
             if (data.admin == "TRUE") {
                 console.log("user is admin");
-                loadUsers()
+                loadUsers();
             } else {
                 window.location.replace("home.html");
             }
@@ -22,6 +22,22 @@ $(document).ready(function(){
     });
 
 
+  $("#profileBtn").click(function(){
+    $.ajax({
+      url: "./data/applicationLayer.php",
+      type: "POST",
+      data: {"action": "logOut"},
+      ContentType: "application/json",
+      dataType: "json",
+      success: function(data){
+        alert("See you later");
+        window.location.replace("index.html");
+      },
+      error: function(error){
+        console.log("Error");
+      }
+    });
+  });
   // Action when clicking the sign up button
   $("#signUpBtn").click(function(){
     var validAccount = true;
@@ -34,16 +50,16 @@ $(document).ready(function(){
     // Validate last name
     if (!validateInput($("#lastName"), $("#errorLastName"))){
       validAccount = false;
-    } 
+    }
     // Validate username
     if (!validateInput($("#username"), $("#errorUsername"))){
       validAccount = false;
-    } 
+    }
     //Validate email
     if(!validateInput($("#email"), $("#errorEmail"))) {
       validAccount = false;
     }
-      
+
     // Validate password
     if (!validateInput($("#password"), $("#errorPassword"))){
       validAccount = false;
@@ -70,7 +86,7 @@ $(document).ready(function(){
     }
 
     if (validAccount) {
-      registerUser($("#username"), $("#password"), $("#email"), $("#firstName"), $("#lastName"), $("input[name='job']"), $("#errorSignUp"));
+      registerUser($("#username"), $("#password"), $("#email"), $("#firstName"), $("#lastName"), $("input[name='job']"), $("#errorSignUp"), $("#passwordConfirmation"));
     }
 
     return false;
@@ -95,31 +111,35 @@ function loadUsers() {
 }
 
 function presentUsers(users) {
-    $(".usersSection").replace();
-    for (var i=0; i < rooms.length; i++){
-        presentUser(users[i]);
+  $(".userSection").remove();
+  for (var i=0; i < users.length; i++){
+    presentUser(users[i]);
     }
 }
 
 function presentUser(user) {
+  console.log(user);
     var newHtml = '<div class="userDiv">';
+    newHtml += '<p> ID: ' + user.id + '</p>';
+    newHtml += '<p> Username: ' + user.username + '</p>';
+    newHtml += '<p> Password: ' + user.password + '</p>';
     newHtml += '</div>';
     $(".usersSection").append(newHtml);
 }
 
 
-// Generic function to validate an input of type text/password 
+// Generic function to validate an input of type text/password
 // Requires the element to be validated and the element of the error span to display the message
 function validateInput($field, $errorMsg){
   if ($field.val() == "") {
     $errorMsg.show();
     $field.addClass("formElementError");
     return false;
-  } 
+  }
 
   $errorMsg.hide();
   $field.addClass("formElement")
-  $field.removeClass("formElementError")  
+  $field.removeClass("formElementError")
   return true
 }
 
@@ -129,7 +149,7 @@ function validatePasswords($field1, $field2, $errorMsg){
   if ($field1.val() != $field2.val()){
     $errorMsg.show()
     return false
-  } 
+  }
 
   $errorMsg.hide()
   return true
@@ -143,24 +163,24 @@ function validateRadio($radioElements, $errorMsg){
     $errorMsg.show()
     return false
   }
-  
+
   $errorMsg.hide()
   return true
 }
 
-function registerUser($usernameField, $passwordField, $emailField, $firstNameField, $lastNameField, $jobs, $errorMsg) {
+function registerUser($usernameField, $passwordField, $emailField, $firstNameField, $lastNameField, $jobs, $errorMsg, $passwordConfirmation) {
   $errorMsg.hide();
 
   // Admin 1, Female 0
   var admin = $jobs.first().is(":checked") ? 1 : 0;
 
   var jsonToSend = {
-    "username": $usernameField.val(), 
+    "username": $usernameField.val(),
     "userPassword": $passwordField.val(),
     "email": $emailField.val(),
     "firstName": $firstNameField.val(),
     "lastName": $lastNameField.val(),
-    "admin": admin, 
+    "admin": admin,
     "action": "registerUser"
   };
 
@@ -171,13 +191,17 @@ function registerUser($usernameField, $passwordField, $emailField, $firstNameFie
     ContentType: "application/json",
     dataType: "json",
     success: function(data){
-      window.location.replace("home.html");
+      $usernameField.val("");
+      $passwordField.val("");
+      $emailField.val("");
+      $firstNameField.val("");
+      $lastNameField.val("");
+      $passwordConfirmation.val("");
+      loadUsers();
     },
     error: function(error){
       console.log(error.statusText);
-      
+
     }
   });
 }
-
-

@@ -20,7 +20,22 @@ $(document).ready(function(){
 			window.location.replace("index.html");
 		}
 	});
-	
+	$("#profileBtn").click(function(){
+    $.ajax({
+      url: "./data/applicationLayer.php",
+      type: "POST",
+      data: {"action": "logOut"},
+      ContentType: "application/json",
+      dataType: "json",
+      success: function(data){
+        alert("See you later");
+        window.location.replace("index.html");
+      },
+      error: function(error){
+        console.log("Error");
+      }
+    });
+  });
 	// MARK: - Actions
 
 	// Search functions
@@ -70,7 +85,7 @@ function showModal(title, message){
 
 function searchUser(){
 	var text = $("#searchField").val();
-		
+
 	if (text != "") {
 
 		var jsonToSend = {
@@ -93,7 +108,7 @@ function searchUser(){
 				showModal("Search error", error.statusText);
 			}
 		});
-		
+
 	} else {
 		showModal("Empty field","You need to write a message to be able to post");
 	}
@@ -103,7 +118,7 @@ function presentUsers(data){
 	$("#usersSection").empty();
 	for (var i = 0; i < data.length; i++){
 		var newHtml = '<div id=\'' + data[i].id + '\' class="userDiv">';
-			
+
 			newHtml += '<div class="leftInfo">';
 				newHtml += '<img id="profileImg" src="assets/profile.svg" alt="avi">';
 				newHtml += '<div class="userInfo">';
@@ -119,7 +134,7 @@ function presentUsers(data){
 		newHtml += '</div>';
 		$("#usersSection").append(newHtml);
 
-		
+
 	}
 }
 
@@ -145,7 +160,3 @@ function addUser(id){
 		}
 	});
 }
-
-
-
-
