@@ -95,7 +95,16 @@ function loadUsers() {
 }
 
 function presentUsers(users) {
+    $(".usersSection").replace();
+    for (var i=0; i < rooms.length; i++){
+        presentUser(users[i]);
+    }
+}
 
+function presentUser(user) {
+    var newHtml = '<div class="userDiv">';
+    newHtml += '</div>';
+    $(".usersSection").append(newHtml);
 }
 
 

@@ -115,23 +115,23 @@ function presentAvailableRoom(room) {
     $(roomId).removeClass();
     $(roomId).addClass("roomDiv");
     $(roomId).addClass("available");
-
-    //$(roomId).setAttribute("onclick", "showModalForRoom(' + room.id  + ',' + 'available' ')");
 }
 
 function presentOccupiedRoom(room) {
 	addRoomNumber(room);
-
+	console.log(room);
+	var endDate = new (Function.prototype.bind.apply(Date, [null].concat(room.endDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
+	
+	var time = endDate.getHours() + ":" + endDate.getMinutes();
    	var newHtml = '<div class="roomBottomInfo">';
     newHtml += '<img class="roomImg" src="assets/clock.svg" alt="clock">';
-    newHtml += '<div class="roomHour">' + room.endHour + '</div>';
+    newHtml += '<div class="roomHour">' + time  + '</div>';
     newHtml += '</div>';
     var roomId = '#room' + room.id;
     $(roomId).removeClass();
     $(roomId).addClass("roomDiv");
     $(roomId).addClass("occupied");
 	$(roomId).append(newHtml);
-	$(roomId).setAttribute("onclick", "showModalForRoom(' + room.id  + ',' + 'occupied' ')");
 }
 
 function presentInServiceRoom(room) {
@@ -140,8 +140,6 @@ function presentInServiceRoom(room) {
     $(roomId).removeClass();
     $(roomId).addClass("roomDiv");
     $(roomId).addClass("inService");
-
-    $(roomId).setAttribute("onclick", "showModalForRoom(' + room.id  + ',' + 'inService' ')");
 }
 
 function presentInRepairRoom(room) {
@@ -150,7 +148,6 @@ function presentInRepairRoom(room) {
     $(roomId).removeClass();
     $(roomId).addClass("roomDiv");
     $(roomId).addClass("inRepair");
-    $(roomId).setAttribute("onclick", "showModalForRoom(' + room.id  + ',' + 'inRepair' ')");
 }
 
 function addRoomNumber(room) {
@@ -230,6 +227,7 @@ function showOccupiedModal(roomId) {
 		dataType: "json",
 		success: function(data){
 			console.log(data);
+			var newHtml = modalHeader(roomId);
 			$("#occupiedModal").show();
 		},
 		error: function(error){
@@ -260,9 +258,30 @@ function modalHeader(roomId) {
 }
 
 
-function bookRoom($roomId) {
-	loadRooms();
-	$("#availableModal").hide();
+function bookRoom(roomId) {
+
+	var jsonToSend = {
+		"roomId": roomId,
+		"hours": $("#hoursTf").val(),
+		"earning": $("#bookingPrice").html(),
+		"action": "bookRoom"
+	};
+
+	$.ajax({
+		url: "./data/applicationLayer.php",
+		type: "POST",
+		data: jsonToSend,
+		ContentType: "application/json",
+		dataType: "json",
+		success: function(data){
+			loadRooms();
+			$("#availableModal").hide();
+		},
+		error: function(error){
+			console.log(error.statusText);
+		}
+	});
+	
 }
 
 function checkoutRoom($roomId) {
@@ -272,11 +291,12 @@ function checkoutRoom($roomId) {
 
 function updateBookingPrice() {
 	$cost = $("#bookingPrice").attr("cost");
-
 	$earning = $cost * $("#hoursTf").val();
 	console.log($earning );
 	$("#bookingPrice").html($earning);
 }
+
+
 
  
 
