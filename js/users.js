@@ -79,8 +79,27 @@ $(document).ready(function(){
 
     return false;
   });
+
+    // Modal functions
+  $("#modalBtn").click(function (){
+    $("#myModal").hide();
+  });
+
+  $(window).click( function(event){
+      if (event.target == $("#modal")) {
+          $("#myModal").hide();
+      }
+  });
 });
 
+
+function showModal(title, message){
+  console.log("showing");
+  $("#modalTitle").text(title);
+  $("#modalMessage").text(message);
+  $("#myModal").show();
+  console.log("showed");
+}
 
 function loadUsers() {
     $.ajax({
@@ -108,10 +127,12 @@ function presentUsers(users) {
 function presentUser(user) {
   console.log(user);
     var newHtml = '<div class="userDiv">';
+    newHtml += '<div class="userInfo">';
     newHtml += '<div> ID: ' + user.id + '</div>';
-    newHtml += '<div> Username: ' + user.username + '</div>';
-    newHtml += '<div> Password: ' + user.password + '</div>';
-    newHtml += '<button class="roundedBtn deleteBtn" type="button" onclick="deleteUser(' + user.id + ')">DELETE</button>';
+    newHtml += '<div class="username"> Username: ' + user.username + '</div>';
+    newHtml += '<div class="password"> Password: ' + user.password + '</div>';
+    newHtml += '</div>';
+    newHtml += '<button class="roundedBtn deleteBtn" type="button" onclick="deleteUser(' + user.id + ')">BORRAR</button>';
     newHtml += '</div>';
     $(".usersSection").append(newHtml);
 }
@@ -123,9 +144,8 @@ function deleteUser(userID){
     ContentType: "application/json",
     dataType: "json",
     success: function(data){
-      alert("User deleted");
+      showModal("Usuario borrado", "El usuario ha sido eliminado");
       loadUsers();
-
     },
     error: function(error){
       console.log("Error");
@@ -138,13 +158,13 @@ function deleteUser(userID){
 function validateInput($field, $errorMsg){
   if ($field.val() == "") {
     $errorMsg.show();
-    $field.addClass("formElementError");
+    $field.addClass("textFieldError");
     return false;
   }
 
   $errorMsg.hide();
-  $field.addClass("formElement")
-  $field.removeClass("formElementError")
+  $field.addClass("textField")
+  $field.removeClass("textFieldError")
   return true
 }
 
@@ -217,6 +237,7 @@ function registerUser($usernameField, $passwordField, $emailField, $firstNameFie
       $firstNameField.val("");
       $lastNameField.val("");
       $passwordConfirmation.val("");
+      showModal("Usuario creado", "El usuario ha sido registrado");
       loadUsers();
     },
     error: function(error){

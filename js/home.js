@@ -262,7 +262,7 @@ function showInServiceModal(roomId) {
 	newHtml += '<div class="modalBody">'
    		newHtml += '<p class="modalMessage">Cambiar estado del cuarto</p>';
    		newHtml += '<button id="makeAvailableBtn" class="roundedBtn modalBtn" type="button" onclick="makeRoomAvailable(' + roomId + ')">PONER DISPONIBLE</button>';
-   		newHtml += '<button id="setRepairBtn" class="roundedBtn modalBtn" type="button" onclick="changeRoomToInRepair(' + roomId + ')">PONER EN REPARACION</button>';
+   		newHtml += '<button id="setRepairBtn" class="roundedBtn modalBtn" type="button" onclick="changeRoomToInRepair(' + roomId + ')">PONER EN REPARACIÓN</button>';
     newHtml += '</div>';
     newHtml += '</div>';
 	$("#inServiceModal").html(newHtml);

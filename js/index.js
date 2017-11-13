@@ -44,13 +44,13 @@ $(document).ready(function(){
 function validateInput($field, $errorMsg){
 	if ($field.val() == "") {
 		$errorMsg.show();
-		$field.addClass("formElementError");
+		$field.addClass("textFieldError");
 		return false;
 	}
 
 	$errorMsg.hide();
-	$field.addClass("formElement")
-	$field.removeClass("formElementError")
+	$field.addClass("textField")
+	$field.removeClass("textFieldError")
 	return true
 }
 

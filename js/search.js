@@ -110,6 +110,7 @@ function presentRooms(rooms){
 
 function presentRoom(room) {
 	var newHtml = '<div id="room'+room.id+'" class="roomDiv" onclick="showModalForRoom('+room.id+')">';
+	newHtml += '<div class="leftInfo">';
 	switch (room.status) {
 		case '1':
 			newHtml += '<div class="roomStatus available"></div>';
@@ -125,8 +126,11 @@ function presentRoom(room) {
 			break;
 	}
 	newHtml += '<div class="roomNumber">Cuarto '+ room.id + '</div>';
+	newHtml += '</div>';
+	newHtml += '<div class="rightInfo">';
 	newHtml += '<div class="roomType"> Tipo '+ room.type + '</div>';
 	newHtml += '<div class="roomPrice"> Precio $'+ room.price + '</div>';
+	newHtml += '</div>';
 	newHtml += '</div>';
 	$("#roomsSection").append(newHtml);
 }
@@ -153,7 +157,7 @@ function searchRoom() {
 			},
 			error: function(error){
 				console.log(error.statusText);
-				showModal("Search error", error.statusText);
+				showModal("Error de búsqueda", error.statusText);
 			}
 		});
 
@@ -193,7 +197,7 @@ function showModalForRoom(roomId) {
 		},
 		error: function(error){
 			console.log(error.statusText);
-			showModal("DB error", error.statusText);
+			showModal("Error", error.statusText);
 		}
 	});
 

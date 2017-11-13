@@ -4,6 +4,7 @@
   <title>
     Hotel Sweet - Users
   </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" type="text/css" href="styles/hotelSweet.css">
   <link rel="stylesheet" type="text/css" href="styles/users.css">
 </head>
@@ -23,7 +24,7 @@
       </div>
 
       <div class="rightMenu">
-        <button class="navMenuBtn" type="button" onclick="logout()">Cerrar Sesion</button>
+        <button class="navMenuBtn" type="button" onclick="logout()">Cerrar Sesión</button>
       </div>
 
     </div>
@@ -32,47 +33,48 @@
   <div class="page">
 
     <form id="signUpForm">
-        <div> Nombre </br>
-          <input id="firstName" class= "formElement" type="text">
-          <span id="errorFirstName" class="error">*Porfavor ingresa una nombre</span>
+        <div class="title"> Registro de usuarios </div>
+        <div class="fields"> 
+          <input id="firstName" class= "textField" type="text" placeholder="Nombre">
+          <input id="lastName" class= "textField" type="text" placeholder="Apellido">
+          <div id="errorFirstName" class="error">*Porfavor ingresa una nombre</div>
+          <div id="errorLastName" class="error">*Porfavor ingresa un apellido</div>
         </div>
-        <div> Apellido </br>
-          <input id="lastName" class= "formElement" type="text">
-          <span id="errorLastName" class="error">*Porfavor ingresa un apellido</span>
+        <div class="fields"> 
+          <input id="username" class= "textField" type="text" placeholder="Usuario">
+          <input id="email" class= "textField" type="text" placeholder="Correo">
+          <div id="errorUsername" class="error">*Porfavor ingresa una usuario</div>
+          <div id="errorEmail" class="error">*Porfavor ingresa un correo</div>
         </div>
-        <div> Usuario </br>
-          <input id="username" class= "formElement" type="text">
-          <span id="errorUsername" class="error">*Porfavor ingresa una usuario</span>
+        <div class="fields"> 
+          <input id="password" class= "textField" type="password" placeholder="Contraseña">
+          <input id="passwordConfirmation" class= "textField" type="password" placeholder="Confirmación contraseña">
+          <div id="errorPassword" class="error">*Porfavor ingresa una contraseña</div>
+          <div id="errorPasswordConfirmation" class="error">*Porfavor ingresa la confirmación de contraseña</div>
+          <div id="errorSamePassword" class="error">*Las contrasenas son distintas</div>
         </div>
-        <div> Correo </br>
-          <input id="email" class= "formElement" type="text">
-          <span id="errorEmail" class="error">*Porfavor ingresa un correo</span>
-        </div>
-        <div> Contrasena </br>
-          <input id="password" class= "formElement" type="password">
-          <span id="errorPassword" class="error">*Porfavor ingresa una contrasena</span>
-        </div>
-        <div> Confirmar contrasena </br>
-          <input id="passwordConfirmation" class= "formElement" type="password">
-          <span id="errorPasswordConfirmation" class="error">*Porfavor ingresa una contrasena</span>
-          <span id="errorSamePassword" class="error">*Las contrasenas son distintas</span>
-        </div>
-        <div> Puesto </br>
+        <div class="fields"> 
           <input id="male" type="radio" name="job" value="Masculine" checked> Administrador </br>
           <input id="female" type="radio" name="job" value="Feminine"> Empleado </br>
-          <span id="errorJob" class="error">*Porfavor selecciona un puesto</span>
+          <div id="errorJob" class="error">*Porfavor selecciona un puesto</div>
         </div>
-        <button id="signUpBtn" class="roundedBtn" form="signUpForm">Registrar cuenta</button>
-        <span id="errorSignUp" class="error">*El usuario ya existe, favor de usar otro</span>
+        <div class="fields"> 
+        <button id="signUpBtn" class="roundedBtn" form="signUpForm">REGISTRAR</button>
+        <div id="errorSignUp" class="error">*El usuario ya existe, favor de usar otro</div>
+        </div>
     </form>
+    <br>
+    <div class="title">Usuarios</div>
     <div class="usersSection">
+
 
     </div>
   </div>
 
   <!-- POPUPS -->
 
-  <div id="availableModal" class="modal">
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
     <!-- Modal content -->
     <div class="modalContent">
       <div class="modalHeader">

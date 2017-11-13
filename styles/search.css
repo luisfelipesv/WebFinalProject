@@ -27,87 +27,58 @@
   padding: 0px;
   color: black;
   cursor:pointer;
+  height: 55px;
 }
 
 .leftInfo {
-  display: inline-flex;
-
+  display: inline-block;
+  height: 55px;
+;
 }
 
 .rightInfo {
   float: right;
-  display: inline-flex;
-  align-items: center;
-  height: 79px;
-  margin: 0;
+  display: inline-block;
+  height: 50px;
+  margin: 5px 10px 0px 0px;
   padding: 0;
-  vertical-align: middle;
+  text-align: right;
 }
 
-.userInfo {
-   display: inline-block;
-}
-
-#profileImg {
-  color: blue;
-}
-
-.name {
-  font-weight: bold;
-  font-size: 14px;
-  color: black;
+.roomStatus {
+  float: left;
   display: inline-block;
-  margin-top: 16px;
-  margin-left: 16px;
-  text-align: center;
-  vertical-align:top;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  margin: 10px 0px 0px 10px;
 }
 
-.username {
-  font-size: 14px;
-  font-weight: 500;
-  color: gray;
+.roomNumber {
+  float: left;
   display: inline-block;
-  margin-top: 16px;
-  margin-left: 8px;
-  vertical-align:top;
+  font-weight: 600;
+  height: 35px;
+  margin: 18px 10px 10px 10px;
 }
 
-.user {
-  display: block;
-  height: 40px;
+.roomStatus.available {
+  background-color: #7ED321;
 }
 
-.email {
-  font-size: 14px;
-  color: black;
-  margin-top: 8px;
-  margin-left: 16px;
-  margin-right: 16px;
-  margin-bottom: 16px;
-  vertical-align:top;
-  display: block;
+.roomStatus.occupied {
+  background-color: #BF1F41;
 }
 
-.lineDivider {
-  width: 100%;
-  height: 1px;
-  background-color: #F7F7F7;
-  margin: 0px;
-  padding: 0px;
+.roomStatus.inService {
+  background-color: #F5A623;
 }
 
-.addUserBtn {
-  height:100%;
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  border: 0px;
-  margin: 5px 16px 0px 0px;
-  background-color: white;
-  padding: 0px;
-  cursor:pointer;
+.roomStatus.inRepair {
+  background-color: #C5C4C2;
 }
+
+
 
 .modalContent.historyModalContent {
   width: 500px;

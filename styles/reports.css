@@ -1,6 +1,6 @@
 .timeline {
   background-color: #F7F7F7;
-  width: 660px;
+  width: 960px;
   height: 100vh;
   display: block;
   margin-top: 82px;
@@ -11,13 +11,30 @@
 }
 
 .report{
-  font-weight: bold;
   font-size: 14px;
-  color: white;
+  color: #4A4A4A;
   display: inline-block;
-  background-color: grey;
-  width: 200px;
+  background-color: #FFF;
+  height: 200px;
+  width: 250px;
   border-radius: 10px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 24px;
+  margin: 20px auto;
+}
+
+.message {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.total {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 20px auto;
 }

@@ -4,8 +4,9 @@
 <html>
   <head>
     <title>
-      Hotel Sweet
+      Hotel Sweet 
     </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="styles/index.css">
   </head> 
   
@@ -14,19 +15,19 @@
   <form id="logInForm" >
    
       <div class="title"> HOTEL SWEET </div>
-      <div>Username</br>
+      <div>Usuario</br>
         <input id="usernameLogIn" class= "textField"  type="text">
-        <span id="errorUsernameLogIn" class="error">*Please provide a username</span>
+        <div id="errorUsernameLogIn" class="error">* Por favor ingresa un usuario</div>
       </div>
-      <div>Password</br>
+      <div>Contraseña</br>
         <input id="passwordLogIn" class= "textField" type="password">
-        <span id="errorPasswordLogIn" class="error">*Please provide a password</span>
+        <div id="errorPasswordLogIn" class="error">*Por favor ingresa una contraseña</div>
       </div>
 
-      <input id="rememberPass" type="checkbox" name="passwordRem" value="Remember"> Remember username<br>
+      <input id="rememberPass" type="checkbox" name="passwordRem" value="Remember"> Recordar usuario<br>
       <br>
-      <button id="logInBtn" class ="roundedBtn" type="submit" value="Log in" form="logInForm">Iniciar sesion</button>
-      <span id="errorLogIn" class="error">*Wrong account</span>
+      <button id="logInBtn" class ="roundedBtn" type="submit" value="Log in" form="logInForm">INICIAR SESIÓN</button>
+      <div id="errorLogIn" class="error">* Cuenta incorrecta</div>
       
   </form>
 
