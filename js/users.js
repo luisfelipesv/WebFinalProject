@@ -10,6 +10,7 @@ $(document).ready(function(){
             console.log(data);
             if (data.admin == "TRUE") {
                 console.log("user is admin");
+                loadUsers()
             } else {
                 window.location.replace("home.html");
             }

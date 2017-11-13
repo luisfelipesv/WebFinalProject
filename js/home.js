@@ -35,6 +35,28 @@ $(document).ready(function(){
 		showModalForRoom(roomId, e);
 	});
 
+	$(".closeModalBtn").click(function (e){
+		console.log("close btn");
+		hideModals();
+	});
+
+	$('#hoursTf').bind("enterKey",function(e){
+   		updateBookingPrice();
+   		console.log("updating");
+	});
+
+	$('#hoursTf').on('change', function(){
+     	console.log("updating");
+   });
+
+	$('#hoursTf').keyup(function(e){
+		console.log("updating");
+    	if(e.keyCode == 13){
+    		console.log("updating");
+        	$(this).trigger("enterKey");
+    	}
+	});
+
 });
 
 
@@ -139,7 +161,13 @@ function addRoomNumber(room) {
 }
 
 // MARK: - Show modals functions
+function hideModals() {
+	$("#availableModal").hide();
+	$("#occupiedModal").hide();
+	$("#inServiceModal").hide();
+	$("#inRepairModal").hide();
 
+}
 function showModalForRoom(roomId, event) {
 	var roomType = event.currentTarget.className;
 	console.log(roomType);
@@ -172,8 +200,11 @@ function showAvailableModal(roomId) {
 		success: function(data){
 			var newHtml = modalHeader(roomId);
    		 	newHtml += '<div class="modalBody">'
-    			newHtml += '<p id="modalMessage">Some text in the Modal Body</p>';
-        		newHtml += '<button id="modalBtn" class="roundedBtn" type="button" >OK</button>';
+    			newHtml += '<p class="modalMessage">Horas:</p>';
+    			newHtml += '<input id="hoursTf" class="textField" type="text" placeholder="Horas..." onchange="updateBookingPrice()">';
+    			newHtml += '<p class="modalMessage">Costo:</p>';
+    			newHtml += '<p id="bookingPrice" class="modalMessage" cost="'+ data.price +'"">' + data.price + '</p>';
+        		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="bookRoom(' + roomId + ')">OK</button>';
     		newHtml += '</div>';
     		$("#availableModal").html(newHtml);
     		$("#availableModal").show();
@@ -208,33 +239,44 @@ function showOccupiedModal(roomId) {
 }
 
 function showInServiceModal(roomId) {
-	//open In service popup
+	var newHtml = modalHeader(roomId);
+	$("#inServiceModal").html(newHtml);
 	$("#inServiceModal").show();
 }
 
 function showInRepairModal(roomId) {
-	// open in repair popup
+	var newHtml = modalHeader(roomId);
+	$("#inRepairModal").html(newHtml);
 	$("#inRepairModal").show();
 }
 
 function modalHeader(roomId) {
 	var newHtml = '<div class="modalHeader">';
     newHtml += '<div class="headerText">Room ' + roomId + '</div>';
-    newHtml += '<span class="headerBtn"></div>';
+    newHtml += '<span class="headerBtn"><button class="closeModalBtn" type="button" onclick="hideModals()" >X</button></div>';
     newHtml += '</div>';
 
     return newHtml;
 }
 
 
-function bookRoom() {
-
+function bookRoom($roomId) {
+	loadRooms();
+	$("#availableModal").hide();
 }
 
-function checkoutRoom() {
-
+function checkoutRoom($roomId) {
+	loadRooms();
+	$("#occupiedModal").hide();
 }
 
+function updateBookingPrice() {
+	$cost = $("#bookingPrice").attr("cost");
+
+	$earning = $cost * $("#hoursTf").val();
+	console.log($earning );
+	$("#bookingPrice").html($earning);
+}
 
  
 
