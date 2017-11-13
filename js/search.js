@@ -75,7 +75,22 @@ $(document).ready(function(){
 
 
 });
-
+function logout(){
+  $.ajax({
+    url: "./data/applicationLayer.php",
+    type: "POST",
+    data: {"action": "logOut"},
+    ContentType: "application/json",
+    dataType: "json",
+    success: function(data){
+      alert("See you later");
+      window.location.replace("index.html");
+    },
+    error: function(error){
+      console.log("Error");
+    }
+  });
+}
 function showModal(title, message){
 	console.log("showing");
 	$("#modalTitle").text(title);
@@ -188,7 +203,7 @@ function showModalForRoom(roomId) {
 			}
     		newHtml += '</div>';
     		$("#historyModal").html(newHtml);
-   			$("#historyModal").show();	
+   			$("#historyModal").show();
 		},
 		error: function(error){
 			console.log(error.statusText);
@@ -196,7 +211,7 @@ function showModalForRoom(roomId) {
 		}
 	});
 
-	
+
 
 }
 
@@ -216,7 +231,3 @@ function presentHistory(room){
 	newHtml += '</div>';
 	return newHtml;
 }
-
-
-
-

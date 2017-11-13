@@ -46,6 +46,22 @@ function loadReports() {
 	loadWeekReport();
 
 }
+function logout(){
+  $.ajax({
+    url: "./data/applicationLayer.php",
+    type: "POST",
+    data: {"action": "logOut"},
+    ContentType: "application/json",
+    dataType: "json",
+    success: function(data){
+      alert("See you later");
+      window.location.replace("index.html");
+    },
+    error: function(error){
+      console.log("Error");
+    }
+  });
+}
 
 function loadWeekReport() {
 	$.ajax({

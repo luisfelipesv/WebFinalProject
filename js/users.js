@@ -22,22 +22,10 @@ $(document).ready(function(){
     });
 
 
-  $("#profileBtn").click(function(){
-    $.ajax({
-      url: "./data/applicationLayer.php",
-      type: "POST",
-      data: {"action": "logOut"},
-      ContentType: "application/json",
-      dataType: "json",
-      success: function(data){
-        alert("See you later");
-        window.location.replace("index.html");
-      },
-      error: function(error){
-        console.log("Error");
-      }
-    });
-  });
+
+
+
+
   // Action when clicking the sign up button
   $("#signUpBtn").click(function(){
     var validAccount = true;
@@ -111,7 +99,7 @@ function loadUsers() {
 }
 
 function presentUsers(users) {
-  $(".userSection").remove();
+  $(".usersSection").empty();
   for (var i=0; i < users.length; i++){
     presentUser(users[i]);
     }
@@ -123,10 +111,27 @@ function presentUser(user) {
     newHtml += '<p> ID: ' + user.id + '</p>';
     newHtml += '<p> Username: ' + user.username + '</p>';
     newHtml += '<p> Password: ' + user.password + '</p>';
+    newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="deleteUser(' + user.id + ')">DELETE</button>';
     newHtml += '</div>';
     $(".usersSection").append(newHtml);
 }
+function deleteUser(userID){
+  $.ajax({
+    url: "./data/applicationLayer.php",
+    type: "POST",
+    data: {"action": "deleteUser", "userId": userID},
+    ContentType: "application/json",
+    dataType: "json",
+    success: function(data){
+      alert("User deleted");
+      loadUsers();
 
+    },
+    error: function(error){
+      console.log("Error");
+    }
+  });
+}
 
 // Generic function to validate an input of type text/password
 // Requires the element to be validated and the element of the error span to display the message
@@ -166,6 +171,22 @@ function validateRadio($radioElements, $errorMsg){
 
   $errorMsg.hide()
   return true
+}
+function logout(){
+  $.ajax({
+    url: "./data/applicationLayer.php",
+    type: "POST",
+    data: {"action": "logOut"},
+    ContentType: "application/json",
+    dataType: "json",
+    success: function(data){
+      alert("See you later");
+      window.location.replace("index.html");
+    },
+    error: function(error){
+      console.log("Error");
+    }
+  });
 }
 
 function registerUser($usernameField, $passwordField, $emailField, $firstNameField, $lastNameField, $jobs, $errorMsg, $passwordConfirmation) {
