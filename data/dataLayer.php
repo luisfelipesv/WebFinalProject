@@ -406,7 +406,7 @@
 
 		$sql = "SELECT *
 				FROM Rooms
-				WHERE id LIKE '%$text%'";
+				WHERE id = '$text'";
 
 		$result = $conn->query($sql);
 
@@ -428,7 +428,7 @@
 		}
 
 		$conn->close();
-		return array("status"=>401, "headerMsg"=>"No users with that name or email", "dieMsg"=>"No users");
+		return array("status"=>401, "headerMsg"=>"No se encontraron cuartos con ese texto", "dieMsg"=>"No users");
 	}
 
 	function attemptGetWeekSummary(){
@@ -582,6 +582,42 @@
 			"type3Earning" => $type3Earning,
 			"totalEarning" => $totalEarning,
 			"status"=>200);
+	}
+
+	function attemptGetRoomHistory($roomId){
+		$conn = databaseConnection();
+		if ($conn == null){
+			return array("status"=> 500);
+		}
+
+		$sql = "SELECT *
+				FROM BookingHistory bh
+				WHERE bh.roomId = '$roomId'
+				ORDER BY startDate DESC
+				LIMIT 5";
+
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0){
+			$histories = array();
+			while ($row = $result->fetch_assoc()){
+				$history = array(
+					"roomId"=>$row["roomId"],
+					"startDate"=>$row["startDate"],
+					"endDate"=>$row["endDate"],
+					"earning"=>$row["earning"]
+				);
+
+				array_push($histories,$history);
+			}
+
+			$conn->close();
+			return array("data" => $histories, "status"=>200);
+		}
+
+		
+		$conn->close();
+		return array("status"=>401, "headerMsg"=>"Este cuarto no tiene historial", "dieMsg"=>"Cuarto sin historial");
 	}
 
 ?>

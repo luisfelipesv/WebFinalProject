@@ -200,7 +200,7 @@ function showAvailableModal(roomId) {
     			newHtml += '<p class="modalMessage">Horas:</p>';
     			newHtml += '<input id="hoursTf" class="textField" type="text" placeholder="Horas..." onchange="updateBookingPrice()">';
     			newHtml += '<p class="modalMessage">Costo:</p>';
-    			newHtml += '<p id="bookingPrice" class="modalMessage" cost="'+ data.price +'"">' + data.price + '</p>';
+    			newHtml += '<p id="bookingPrice" class="modalMessage" cost="'+ data.price +'""> 0 </p>';
         		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="bookRoom(' + roomId + ')">OK</button>';
     		newHtml += '</div>';
     		$("#availableModal").html(newHtml);
@@ -228,10 +228,10 @@ function showOccupiedModal(roomId) {
 		success: function(data){
 			console.log(data);
     		var startDate = new (Function.prototype.bind.apply(Date, [null].concat(data.startDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
-			var startTime = startDate.getHours() + ":" + startDate.getMinutes();
+			var startTime = startDate.toLocaleTimeString();
 
     		var endDate = new (Function.prototype.bind.apply(Date, [null].concat(data.endDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
-			var endTime = endDate.getHours() + ":" + endDate.getMinutes();
+			var endTime = endDate.toLocaleTimeString();
 
     		var newHtml = modalHeader(roomId);
    		 	newHtml += '<div class="modalBody">'
@@ -240,7 +240,7 @@ function showOccupiedModal(roomId) {
     			newHtml += '<p class="modalMessage">Horas:</p>';
     			newHtml += '<input id="extraHoursTf" class="textField" type="text" placeholder="Horas extras..." onchange="updateCheckoutPrice()">';
     			newHtml += '<p class="modalMessage">Costo:</p>';
-    			newHtml += '<p id="checkoutPrice" class="modalMessage" cost="'+ data.price +'"">' + data.price + '</p>';
+    			newHtml += '<p id="checkoutPrice" class="modalMessage" cost="'+ data.price +'""> 0 </p>';
         		newHtml += '<button class="roundedBtn modalBtn" type="button" onclick="checkoutRoom(' + roomId + ')">OK</button>';
     		newHtml += '</div>';
 			$("#occupiedModal").html(newHtml);

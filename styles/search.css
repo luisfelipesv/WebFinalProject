@@ -19,12 +19,13 @@
 }
 
 /* Users section */
-.userDiv {
+.roomDiv {
   background-color: #FFF;
   text-align: left;
   border-radius: 10px;
   margin-bottom: 16px;
   padding: 0px;
+  color: black;
 }
 
 .leftInfo {

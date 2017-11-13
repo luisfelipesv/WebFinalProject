@@ -11,6 +11,7 @@ $(document).ready(function(){
 			console.log(data);
 			if (data.admin == "TRUE") {
 				console.log("user is admin");
+				loadRooms();
 			} else {
 				window.location.replace("home.html");
 			}
@@ -45,11 +46,11 @@ $(document).ready(function(){
 
 	// Search functions
 	$("#searchBtn").click(function(){
-		searchUser();
+		searchRoom();
 	});
 
 	$('#searchField').bind("enterKey",function(e){
-   		searchUser();
+   		searchRoom();
 	});
 
 	$('#searchField').keyup(function(e){
@@ -83,14 +84,62 @@ function showModal(title, message){
 	console.log("showed");
 }
 
-function searchUser(){
+// MARK: - Present rooms functions
+function loadRooms(){
+	$.ajax({
+		url: "./data/applicationLayer.php",
+		type: "POST",
+		data: {"action": "getRooms"},
+		ContentType: "application/json",
+		dataType: "json",
+		success: function(data){
+			console.log(data);
+			presentRooms(data);
+		},
+		error: function(error){
+			console.log(error.statusText);
+		}
+	});
+}
+
+function presentRooms(rooms){
+	$("#roomsSection").empty();
+	for (var i=0; i < rooms.length; i++){
+		presentRoom(rooms[i]);
+	}
+}
+
+function presentRoom(room) {
+	var newHtml = '<div id="room'+room.id+'" class="roomDiv" onclick="showModalForRoom('+room.id+')">';
+	switch (room.status) {
+		case '1':
+			newHtml += '<div class="roomStatus available"></div>';
+			break;
+		case '2':
+			newHtml += '<div class="roomStatus occupied"></div>';
+			break;
+		case '3':
+			newHtml += '<div class="roomStatus inService"></div>';
+			break;
+		case '4':
+			newHtml += '<div class="roomStatus inRepair"></div>';
+			break;
+	}
+	newHtml += '<div class="roomNumber">Cuarto '+ room.id + '</div>';
+	newHtml += '<div class="roomType"> Tipo '+ room.type + '</div>';
+	newHtml += '<div class="roomPrice"> Precio $'+ room.price + '</div>';
+	newHtml += '</div>';
+	$("#roomsSection").append(newHtml);
+}
+
+// MARK: - Search room functions
+function searchRoom() {
 	var text = $("#searchField").val();
 
 	if (text != "") {
-
 		var jsonToSend = {
 			"text": text,
-			"action": "searchUser"
+			"action": "searchRoom"
 		};
 
 		$.ajax({
@@ -101,7 +150,7 @@ function searchUser(){
 			dataType: "json",
 			success: function(data){
 				console.log(data);
-				presentUsers(data);
+				presentRooms(data);
 			},
 			error: function(error){
 				console.log(error.statusText);
@@ -110,39 +159,16 @@ function searchUser(){
 		});
 
 	} else {
-		showModal("Empty field","You need to write a message to be able to post");
+		loadRooms();
 	}
 }
 
-function presentUsers(data){
-	$("#usersSection").empty();
-	for (var i = 0; i < data.length; i++){
-		var newHtml = '<div id=\'' + data[i].id + '\' class="userDiv">';
 
-			newHtml += '<div class="leftInfo">';
-				newHtml += '<img id="profileImg" src="assets/profile.svg" alt="avi">';
-				newHtml += '<div class="userInfo">';
-					newHtml += '<div class="name">' +  data[i].firstName + ' ' + data[i].lastName + '</div>';
-					newHtml += '<div class="username"> @' + data[i].username + '</div>';
-					newHtml += '<div class="email">' +  data[i].email + '</div>';
-				newHtml += '</div>';
-			newHtml += '</div>';
-			newHtml += '<div class="rightInfo">';
-				newHtml += '<button class="addUserBtn" type="button" onclick="addUser(' + data[i].id  + ')"><img src="assets/add.svg" alt="avi"></button> ';
-			newHtml += '</div>';
-			newHtml += '<div class="lineDivider"></div>';
-		newHtml += '</div>';
-		$("#usersSection").append(newHtml);
-
-
-	}
-}
-
-function addUser(id){
+function showModalForRoom(roomId) {
 	var jsonToSend = {
-		"friendId": id,
-		"action": "requestFriendship"
-	};
+			"roomId": roomId,
+			"action": "getRoomHistory"
+		};
 
 	$.ajax({
 		url: "./data/applicationLayer.php",
@@ -152,11 +178,45 @@ function addUser(id){
 		dataType: "json",
 		success: function(data){
 			console.log(data);
-			searchUser();
+			var newHtml = '<div class="modalHeader">';
+    		newHtml += '<div class="headerText">Historial Cuarto ' + roomId + '</div>';
+    		newHtml += '<span class="headerBtn"><button class="closeModalBtn" type="button" onclick="hideModals()" >X</button></div>';
+    		newHtml += '</div>';
+   			newHtml += '<div class="modalBody">'
+   			for (var i=0; i < data.length; i++){
+				newHtml += presentHistory(data[i]);
+			}
+    		newHtml += '</div>';
+    		$("#historyModal").html(newHtml);
+   			$("#historyModal").show();	
 		},
 		error: function(error){
 			console.log(error.statusText);
-			showModal("Add error", error.statusText);
+			showModal("DB error", error.statusText);
 		}
 	});
+
+	
+
 }
+
+function hideModals() {
+	$("#historyModal").hide();
+}
+
+function presentHistory(room){
+	var startDate = new (Function.prototype.bind.apply(Date, [null].concat(room.startDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
+	var startTime = startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString();
+
+    var endDate = new (Function.prototype.bind.apply(Date, [null].concat(room.endDate.split(/[\s:-]/)).map(function(v,i){return i==2?--v:v}) ));
+	var endTime = endDate.toLocaleDateString()  + " " + endDate.toLocaleTimeString();
+
+	var newHtml = '<div class="history">';
+	newHtml += 'Cuarto reservado de ' + startTime + ' a ' + endTime + ' por: $' + room.earning;
+	newHtml += '</div>';
+	return newHtml;
+}
+
+
+
+

@@ -60,6 +60,9 @@
 		case "getYearSummary":
 			getYearSummary();
 			break;
+		case "getRoomHistory":
+			getRoomHistory();
+			break;
 	}
 
 	// Session logged
@@ -302,6 +305,18 @@
 				"type3Earning" => $result["type3Earning"],
 				"totalEarning" => $result["totalEarning"]
 			));
+		} else {
+			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
+		}
+	}
+
+	function getRoomHistory(){
+		$roomId = $_POST["roomId"];
+
+		$result = attemptGetRoomHistory($roomId);
+
+		if ($result["status"] == 200){
+			echo json_encode($result["data"]);
 		} else {
 			genericErrorFunction($result["status"],$result["headerMsg"],$result["dieMsg"]);
 		}
